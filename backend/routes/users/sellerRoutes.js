@@ -3,7 +3,7 @@ const multer = require("multer")
 
 
 // controllers
-const {getAllSellerProducts, createSellerProduct} = require("../../controllers/sellerControllers")
+const {getAllSellerProducts, createSellerProduct, updateSellerProduct} = require("../../controllers/sellerControllers")
 
 const router = express.Router()
 
@@ -19,5 +19,7 @@ router.get("/seller/getAllProducts", getAllSellerProducts )
 
 // creating a product 
 router.post("/seller/createProduct", uploadProduct.array('productImage',3), createSellerProduct)
+
+router.patch("/seller/updateProduct/:id", uploadProduct.array('productImage',3), updateSellerProduct)
 
 module.exports = router
