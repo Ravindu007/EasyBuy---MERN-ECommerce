@@ -1,17 +1,43 @@
 require("dotenv").config()
 const mongoose = require("mongoose")
 
+
+// firebase 
+const admin = require("firebase-admin")
+const serviceAccount = require("./serviceAccount.json")
+
+
+admin.initializeApp({
+  credential:admin.credential.cert(serviceAccount),
+  storageBucket:process.env.BUCKET
+})
+
+
+module.exports = {admin:admin}
+
+
+
 // routes
 const sellerRoutes = require("./routes/users/sellerRoutes")
 
-const express = require("express")
 
+const express = require("express")
 const app = express()
+
+
+app.use((req,res,next)=>{
+  res.header("Access-Control-Allow-Origin", "*")
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-requested-Width, Content-Type, Accept"
+  )
+  next()
+})
 
 
 // routes
 // seller routes
-app.use("/api/users",sellerRoutes )
+app.use("/api/users/seller",sellerRoutes )
 
 
 
