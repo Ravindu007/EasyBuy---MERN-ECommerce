@@ -81,103 +81,109 @@ const createSellerProduct = async(req,res) => {
 
 // update
 const updateSellerProduct = async (req, res) => {
-  const productId = req.params.id;
-  const { productName, productCategory, numberOfItems, productImage1, productImage2, productImage3 } = req.body;
+  const { id } = req.params;
+
+  const { numberOfItems } = req.body;
+
   const updateObj = {};
 
-  if (productName) {
-    updateObj.productName = productName;
-  }
-  if (productCategory) {
-    updateObj.productCategory = productCategory;
-  }
   if (numberOfItems) {
     updateObj.numberOfItems = numberOfItems;
   }
-  if (productImage1) {
-    const file = req.file;
-    const fileName = file.originalname;
-    const fileRef = bucket.file(fileName);
-    
-    const stream = fileRef.createWriteStream({
-      metadata: {
-        contentType: file.mimetype
-      }
-    });
 
-    stream.on("error", (err) => {
-      console.log(err);
-      res.status(500).json({ error: 'An error occurred while uploading the image.' });
-    });
+  if (req.files) {
+    const { productImage1, productImage2, productImage3 } = req.files;
 
-    await new Promise((resolve, reject) => {
-      stream.on("finish", async () => {
-        const imageUrl = `https://storage.googleapis.com/${bucket.name}/products/${fileName}`;
-        updateObj.productImage1 = imageUrl;
+    if (productImage1) {
+      const fileName = productImage1[0].originalname;
+      const fileRef = bucket.file(fileName);
 
-        resolve();
+      const stream = fileRef.createWriteStream({
+        metadata: {
+          contentType: productImage1.mimetype,
+        },
       });
-    });
 
-    stream.end(file.buffer);
-  }
-  if (productImage2) {
-    const file = req.file;
-    const fileName = file.originalname;
-    const fileRef = bucket.file(fileName);
-    
-    const stream = fileRef.createWriteStream({
-      metadata: {
-        contentType: file.mimetype
-      }
-    });
-
-    stream.on("error", (err) => {
-      console.log(err);
-      res.status(500).json({ error: 'An error occurred while uploading the image.' });
-    });
-
-    await new Promise((resolve, reject) => {
-      stream.on("finish", async () => {
-        const imageUrl = `https://storage.googleapis.com/${bucket.name}/products/${fileName}`;
-        updateObj.productImage2 = imageUrl;
-
-        resolve();
+      stream.on("error", (err) => {
+        console.log(err);
+        res
+          .status(500)
+          .json({ error: "An error occurred while uploading the image." });
       });
-    });
 
-    stream.end(file.buffer);
-  }
-  if (productImage3) {
-    const file = req.file;
-    const fileName = file.originalname;
-    const fileRef = bucket.file(fileName);
-    
-    const stream = fileRef.createWriteStream({
-      metadata: {
-        contentType: file.mimetype
-      }
-    });
+      await new Promise((resolve, reject) => {
+        stream.on("finish", async () => {
+          const imageUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
+          updateObj.productImage1 = imageUrl;
 
-    stream.on("error", (err) => {
-      console.log(err);
-      res.status(500).json({ error: 'An error occurred while uploading the image.' });
-    });
-
-    await new Promise((resolve, reject) => {
-      stream.on("finish", async () => {
-        const imageUrl = `https://storage.googleapis.com/${bucket.name}/products/${fileName}`;
-        updateObj.productImage3 = imageUrl;
-
-        resolve();
+          resolve();
+        });
       });
-    });
 
-    stream.end(file.buffer);
+      stream.end(productImage1.buffer);
+    }
+
+    if (productImage2) {
+      const fileName = productImage2.name;
+      const fileRef = bucket.file(fileName);
+
+      const stream = fileRef.createWriteStream({
+        metadata: {
+          contentType: productImage2.mimetype,
+        },
+      });
+
+      stream.on("error", (err) => {
+        console.log(err);
+        res
+          .status(500)
+          .json({ error: "An error occurred while uploading the image." });
+      });
+
+      await new Promise((resolve, reject) => {
+        stream.on("finish", async () => {
+          const imageUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
+          updateObj.productImage2 = imageUrl;
+
+          resolve();
+        });
+      });
+
+      stream.end(productImage2.buffer);
+    }
+
+    if (productImage3) {
+      const fileName = productImage3.name;
+      const fileRef = bucket.file(fileName);
+
+      const stream = fileRef.createWriteStream({
+        metadata: {
+          contentType: productImage3.mimetype,
+        },
+      });
+
+      stream.on("error", (err) => {
+        console.log(err);
+        res
+          .status(500)
+          .json({ error: "An error occurred while uploading the image." });
+      });
+
+      await new Promise((resolve, reject) => {
+        stream.on("finish", async () => {
+          const imageUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
+          updateObj.productImage3 = imageUrl;
+
+          resolve();
+        });
+      });
+
+      stream.end(productImage3.buffer);
+    }
   }
 
   try {
-    const product = await productModel.findByIdAndUpdate(productId, updateObj, { new: true });
+    const product = await productModel.findByIdAndUpdate({_id:id}, updateObj, { new: true });
 
     if (!product) {
       return res.status(404).json({ error: 'Product not found.' });
@@ -188,6 +194,6 @@ const updateSellerProduct = async (req, res) => {
     console.log(error);
     res.status(500).json({ error: 'An error occurred while updating the product.' });
   }
-};
+}
 
 module.exports = {getAllSellerProducts, createSellerProduct,updateSellerProduct}

@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
+import { useSellerProductContext } from '../../hooks/useSellerProductContext'
 
 const ProductFrom = () => {
+
+  //product context
+  const {dispatch} = useSellerProductContext()
+
+
   // input fields
   const [productName, setProductName] = useState("")
   const [productCategory, setProductCategory] = useState("")
@@ -28,7 +34,7 @@ const ProductFrom = () => {
 
     const json = await response.json()
     if(response.ok){
-      console.log(json);
+      dispatch({type:"CREATE_PRODUCT", payload:json})
     }
   }
 
