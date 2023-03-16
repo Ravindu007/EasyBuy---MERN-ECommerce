@@ -3,7 +3,7 @@ const multer = require("multer")
 
 
 // controllers
-const {getAllSellerProducts, createSellerProduct} = require("../../controllers/sellerControllers")
+const {getAllSellerProducts, createSellerProduct, updateSellerProduct} = require("../../controllers/sellerControllers")
 
 const router = express.Router()
 
@@ -15,9 +15,20 @@ const uploadProduct = multer({
 
 
 // get all products listed by the seller 
-router.get("/seller/getAllProducts", getAllSellerProducts )
+router.get("/getAllProducts", getAllSellerProducts )
 
 // creating a product 
-router.post("/seller/createProduct", uploadProduct.array('productImage',3), createSellerProduct)
+router.post('/createProduct', uploadProduct.fields([
+  { name: 'productImage1' },
+  { name: 'productImage2' },
+  { name: 'productImage3' }
+]), createSellerProduct);
+
+
+router.patch("/updateProduct/:id", uploadProduct.fields([
+  { name: 'productImage1' },
+  { name: 'productImage2' },
+  { name: 'productImage3' }
+]), updateSellerProduct)
 
 module.exports = router

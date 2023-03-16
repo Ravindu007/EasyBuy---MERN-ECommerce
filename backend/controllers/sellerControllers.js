@@ -1,5 +1,8 @@
 const productModel = require("../models/productModel")
 
+const {admin}  = require("../server")
+const bucket  = admin.storage().bucket(process.env.BUCKET)
+
 // get all products - seller listed
 const getAllSellerProducts = async(req,res)=>{
   try {
@@ -23,9 +26,12 @@ const createSellerProduct = async(req,res) => {
       return;
     } else {
       const imageUrls = [];
+      let numUploaded = 0;
 
-      for (let i = 0; i < 3; i++) {
-        const file = files[i];
+      const fileArray = Object.values(files);
+
+      for (let i = 0; i < fileArray.length; i++) {
+        const file = fileArray[i][0];
         const fileName = file.originalname;
         const fileRef = bucket.file(fileName);
         
@@ -40,31 +46,28 @@ const createSellerProduct = async(req,res) => {
           res.status(500).json({ error: 'An error occurred while uploading the images.' });
         });
 
-        await new Promise((resolve, reject) => {
-          stream.on("finish", async () => {
-            const imageUrl = `https://storage.googleapis.com/${bucket.name}/products/${fileName}`;
-            imageUrls.push(imageUrl);
+        stream.on("finish", async () => {
+          const imageUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`
+          imageUrls.push(imageUrl);
+          numUploaded++;
 
-            if (imageUrls.length === 3) {
-              try {
-                const product = await productModel.create({
-                  productName,
-                  productCategory,
-                  numberOfItems,
-                  productImage1: imageUrls[0],
-                  productImage2: imageUrls[1],
-                  productImage3: imageUrls[2]
-                });
+          if (numUploaded === fileArray.length) {
+            try {
+              const product = await productModel.create({
+                productName,
+                productCategory,
+                numberOfItems,
+                productImage1: imageUrls[0],
+                productImage2: imageUrls[1],
+                productImage3: imageUrls[2]
+              });
 
-                res.status(200).json(product);
-              } catch (error) {
-                console.log(error);
-                res.status(500).json({ error: 'An error occurred while creating the product.' });
-              }
+              res.status(200).json(product);
+            } catch (error) {
+              console.log(error);
+              res.status(500).json({ error: 'An error occurred while creating the product.' });
             }
-
-            resolve();
-          });
+          }
         });
 
         stream.end(file.buffer);
