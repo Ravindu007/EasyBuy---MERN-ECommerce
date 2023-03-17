@@ -1,7 +1,96 @@
+const businessRegistrationModel = require("../models/businessRegistrationModel")
 const productModel = require("../models/productModel")
 
 const {admin}  = require("../server")
 const bucket  = admin.storage().bucket(process.env.BUCKET)
+
+
+// business Registration 
+
+// get business registration Details
+const getBusinessRegistrationDetails = async(req,res) => {
+  try{
+    const details = await businessRegistrationModel.find({}).sort({createdAt:-1})
+    res.status(200).json(details)
+  }catch(error){
+    res.status(400).json(error)
+  }
+}
+
+// create business registration
+const createBusinessRegistrationDetails = async(req,res) => {
+  const {businessName, businessType,businessOwner,businessRegistrationDate,approvalByAdmin, adminComment} = req.body 
+
+  try{
+    let fileUrl = null 
+
+    if(req.file){
+      const {originalname, buffer} = req.file 
+
+      const file = bucket.file(`registrations/${originalname}`)
+
+      await file.save(buffer, {contentType:"application/pdf"})
+
+      fileUrl = `https://storage.googleapis.com/${bucket.name}/${file.name}`;
+      
+      const businessRegistration = await businessRegistrationModel.create({businessName, businessType,businessOwner,businessRegistrationDate,approvalByAdmin, adminComment, businessLegalDocument:fileUrl})
+
+      res.status(200).json(businessRegistration)
+    }
+  }catch(error){
+    res.status(400).json(error)
+  }
+}
+
+const updateBusinessRegistrationDetails = async(req,res) => {
+
+  const {id} = req.params
+
+  try{
+    const existingDetails = await businessRegistrationModel.findById(id)
+
+    let fileUrl = null
+
+    if(req.file){
+      const {originalname, buffer} = req.file 
+
+      const file = bucket.file(`registrations/${originalname}`)
+
+      await file.save(buffer, {contentType:"application/pdf"})
+
+      fileUrl = `https://storage.googleapis.com/${bucket.name}/${filename}`
+
+      existingDetails.businessLegalDocument = fileUrl
+
+      const updatedBusinessRegistrationDetails = await existingDetails.save()
+
+      res.status(200).json(updatedBusinessRegistrationDetails)
+    }else{
+      res.status(400).json({msg:"You need to upload details"})
+    }
+  }catch(error){
+    res.status(400).json(error)
+  }
+}
+
+// delete business details 
+const deleteBusinessRegistrationDetails = async(req,res) => {
+  const {id} = req.params
+
+  try {
+    const deletedBusinessDetails = await businessRegistrationModel.findByIdAndDelete({_id:id})
+    res.status(200).json(deletedBusinessDetails)
+  } catch (error) {
+    res.status(400).json(error)
+  }
+}
+
+
+
+
+
+
+
 
 // get all products - seller listed
 const getAllSellerProducts = async(req,res)=>{
@@ -221,4 +310,10 @@ const deleteProduct = async(req,res) => {
   }
 }
 
-module.exports = {getAllSellerProducts, createSellerProduct,updateSellerProduct,deleteProduct}
+module.exports = {
+  getAllSellerProducts, createSellerProduct,updateSellerProduct,deleteProduct,
+  
+  getBusinessRegistrationDetails, createBusinessRegistrationDetails, updateBusinessRegistrationDetails, deleteBusinessRegistrationDetails,
+  
+
+}

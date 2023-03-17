@@ -3,7 +3,13 @@ const multer = require("multer")
 
 
 // controllers
-const {getAllSellerProducts, createSellerProduct, updateSellerProduct,deleteProduct} = require("../../controllers/sellerControllers")
+const {
+  getAllSellerProducts, createSellerProduct, updateSellerProduct,deleteProduct,
+
+  getBusinessRegistrationDetails, createBusinessRegistrationDetails, updateBusinessRegistrationDetails, deleteBusinessRegistrationDetails, 
+
+
+} = require("../../controllers/sellerControllers")
 
 const router = express.Router()
 
@@ -12,6 +18,26 @@ const router = express.Router()
 const uploadProduct = multer({
   storage:multer.memoryStorage()
 })
+
+
+const uploadRegistration = multer({
+  storage:multer.memoryStorage()
+})
+
+
+
+// registrationRoutes
+
+router.get("/getAllRegistrationDetails", getBusinessRegistrationDetails)
+
+router.post("/createRegistrationDetails", uploadRegistration.single('businessLegalDocument'), createBusinessRegistrationDetails)
+
+router.patch("/updateRegistrationDetails/:id", uploadRegistration.single('businessLegalDocument'),updateBusinessRegistrationDetails)
+
+router.delete("/deleteRegistrationDetails/:id", deleteBusinessRegistrationDetails)
+
+
+
 
 
 // get all products listed by the seller 

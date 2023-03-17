@@ -18,11 +18,16 @@ module.exports = {admin:admin}
 
 
 // routes
+const userRoutes = require("./routes/userRoutes")
 const sellerRoutes = require("./routes/users/sellerRoutes")
+
 
 
 const express = require("express")
 const app = express()
+
+// middleware 
+app.use(express.json())
 
 
 app.use((req,res,next)=>{
@@ -36,6 +41,8 @@ app.use((req,res,next)=>{
 
 
 // routes
+// user routes (not buyers)
+app.use("/api/authUsers",userRoutes)
 // seller routes
 app.use("/api/users/seller",sellerRoutes )
 
