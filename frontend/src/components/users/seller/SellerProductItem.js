@@ -56,6 +56,11 @@ const SellerProductItem = ({product, showForm}) => {
   }
 
 
+  const sendRequestToAdmin = async(e) => {
+    // make patch request 
+    // make send to admin true
+  }
+
   return (
     <div className="sellerProductItem">
     {!isEditing && (
@@ -87,7 +92,12 @@ const SellerProductItem = ({product, showForm}) => {
             </button>
           </div>
           <div className="requestButton" style={{display:"flex", justifyContent:"center", marginTop:"5px"}}>
-            <button className='btn btn-outline-warning'>REQUEST</button>
+            <button 
+              className='btn btn-outline-warning'
+              onClick={sendRequestToAdmin}
+            >
+              REQUEST
+            </button>
           </div>
         </div>
         <div className="col-8 images" style={{display:"flex"}}>

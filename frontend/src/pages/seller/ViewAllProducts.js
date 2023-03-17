@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useSellerProductContext } from '../../hooks/useSellerProductContext'
-import ProductFrom from './ProductFrom'
+import ProductFrom from '../../components/users/seller/ProductFrom'
 import SellerProductItem from '../../components/users/seller/SellerProductItem'
+import SellerProfile from '../../components/users/seller/SellerProfile'
 
 const ViewAllProducts = () => {
 
@@ -34,12 +35,19 @@ const ViewAllProducts = () => {
     <div className='vewAllProducts'>
     <div className="row">
     <div className="col-8" style={{paddingLeft:"50px"}}>
-        <p>Products</p>
-        {isProductsLoading ? <p>LOADING</p> : (
-          products && products.map((product)=>(
-            <SellerProductItem key={product._id} product={product} showForm={setShowForm}/>
-          ))
-        )}
+        <div className="row">
+          <div className="col-12">
+            <SellerProfile/>
+          </div>
+          <div className="col-12">
+          <p>Products</p>
+            {isProductsLoading ? <p>LOADING</p> : (
+              products && products.map((product)=>(
+                <SellerProductItem key={product._id} product={product} showForm={setShowForm}/>
+              ))
+            )}
+          </div>
+        </div>
       </div>
       <div className="col-4">
         {showForm && (

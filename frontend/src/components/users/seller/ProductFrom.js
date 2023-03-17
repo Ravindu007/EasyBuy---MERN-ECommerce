@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSellerProductContext } from '../../hooks/useSellerProductContext'
+import { useSellerProductContext } from '../../../hooks/useSellerProductContext'
 
 const ProductFrom = () => {
 
@@ -26,6 +26,7 @@ const ProductFrom = () => {
     formData.append('productImage1', productImage1)
     formData.append('productImage2', productImage2)
     formData.append('productImage3', productImage3)
+    formData.append('sendToAdmin', false)
 
     const response = await fetch("/api/users/seller/createProduct", {
       method:"POST",

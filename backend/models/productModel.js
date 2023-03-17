@@ -9,7 +9,8 @@ const productSchema = new Schema({
   numberOfItems:{type:Number, required:true},
   productImage1:{type:String, required:true},
   productImage2:{type:String, required:true},
-  productImage3:{type:String, required:true}
+  productImage3:{type:String, required:true},
+  sendToAdmin:{type:Boolean, required:true}
 })
 
 module.exports = mongoose.model('product', productSchema)

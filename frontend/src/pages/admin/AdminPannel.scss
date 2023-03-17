@@ -1,0 +1,14 @@
+.adminPannel{
+  display: flex;
+  justify-content: center;
+  
+  .buttons{
+    position: absolute;
+    top: 40%;
+    border: 1px solid black;
+    button{
+      width: 350px;
+      height: 150px;
+    }
+  }
+}
