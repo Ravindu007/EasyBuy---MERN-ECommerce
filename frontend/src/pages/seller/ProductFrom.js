@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
+import { useSellerProductContext } from '../../hooks/useSellerProductContext'
 
 const ProductFrom = () => {
+
+  //product context
+  const {dispatch} = useSellerProductContext()
+
+
   // input fields
   const [productName, setProductName] = useState("")
   const [productCategory, setProductCategory] = useState("")
@@ -28,7 +34,7 @@ const ProductFrom = () => {
 
     const json = await response.json()
     if(response.ok){
-      console.log(json);
+      dispatch({type:"CREATE_PRODUCT", payload:json})
     }
   }
 
@@ -46,12 +52,16 @@ const ProductFrom = () => {
         </div>
         <div className="form-group">
           <label>Product Category</label>
-          <input 
+          <select
             type="text"
-            className='form-control'
-            onChange={e=>{setProductCategory(e.target.value)}}
+            onChange={e=>setProductCategory(e.target.value)}
             value={productCategory}
-          />
+            className='form-select'
+          >
+            <option>SELECT</option>
+            <option value="cloth">Cloth</option>
+            <option value="electronic">Electronic</option>
+          </select>
         </div>
         <div className="form-group">
           <label>Number of items</label>

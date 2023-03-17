@@ -1,0 +1,31 @@
+.details{
+  border: 1px solid black;
+  padding: 20px;
+}
+.images{
+  border: 1px solid black;
+
+  .item{
+    border: 1px solid black;
+  }
+}
+
+
+
+.imageUpdates{
+  .form-group {
+    position: relative;
+  }
+  
+  .form-group img {
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .form-group input {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
