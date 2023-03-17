@@ -11,6 +11,9 @@ const {
 
 } = require("../../controllers/sellerControllers")
 
+// middleware
+const requireAuth = require("../../middleware/requireAuth")
+
 const router = express.Router()
 
 
@@ -24,6 +27,9 @@ const uploadRegistration = multer({
   storage:multer.memoryStorage()
 })
 
+
+
+router.use(requireAuth)
 
 
 // registrationRoutes

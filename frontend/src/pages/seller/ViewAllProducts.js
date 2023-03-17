@@ -3,9 +3,11 @@ import { useSellerProductContext } from '../../hooks/useSellerProductContext'
 import ProductFrom from '../../components/users/seller/ProductFrom'
 import SellerProductItem from '../../components/users/seller/SellerProductItem'
 import SellerProfile from '../../components/users/seller/SellerProfile'
+import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 
 const ViewAllProducts = () => {
 
+  const {user} = useAuthContext()
   const {sellerProducts:products, dispatch} = useSellerProductContext()
 
 
@@ -17,7 +19,11 @@ const ViewAllProducts = () => {
 
   useEffect(()=>{
     const fetchAllSellerProducts = async() => {
-      const response = await fetch("/api/users/seller/getAllProducts")
+      const response = await fetch("/api/users/seller/getAllProducts",{
+        headers:{
+          'Authorization':`${user.email} ${user.token}`
+        }
+      })
       const json = await response.json()
 
       if(response.ok){
@@ -26,9 +32,11 @@ const ViewAllProducts = () => {
       }
     }
 
-    fetchAllSellerProducts()
+    if(user){
+      fetchAllSellerProducts()
+    }
 
-  },[])
+  },[user, dispatch])
 
 
   return (

@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react'
+import { useAuthContext } from '../../../hooks/authHooks/useAuthContext'
 import { useSellerProfileContext } from '../../../hooks/useSellerProfileContext'
 import SellerRegistrationForm from './SellerRegistrationForm'
 
 const SellerProfile = () => {
 
+  const {user} = useAuthContext()
   const {sellerProfiles:profile, dispatch} = useSellerProfileContext()
 
   // fetch the profile if any
   useEffect(()=>{
     // later we need to fetch the profile according to user email 
     const fetchUserProfile = async() => {
-      const response = await fetch("/api/users/seller/getAllRegistrationDetails")
+      const response = await fetch("/api/users/seller/getAllRegistrationDetails",{
+        headers:{
+          'Authorization':`${user.email} ${user.token}`
+        }
+      })
       const json = await response.json()
 
       if(response.ok){

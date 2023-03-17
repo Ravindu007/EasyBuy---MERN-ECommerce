@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { useLogin } from '../../hooks/authHooks/useLogin'
 
 const Login = () => {
+  const {login, error, isLoading} = useLogin()
 
   // input fields
   const [email, setEmail] = useState("")
@@ -8,6 +10,7 @@ const Login = () => {
 
   const handleLogin = async(e) => {
     e.preventDefault()
+    await login(email, password)
   }
 
   return (
@@ -31,7 +34,8 @@ const Login = () => {
             value={password}
           />
         </div>
-        <button className='btn btn-primary'>LOGIN</button>
+        <button disabled={isLoading} className='btn btn-primary'>LOGIN</button>
+        {error && <div className='error'>{error}</div>}
       </form>
     </div>
   )

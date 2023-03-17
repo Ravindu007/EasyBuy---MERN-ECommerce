@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { useAuthContext } from '../../../hooks/authHooks/useAuthContext'
 import {useSellerProfileContext} from "../../../hooks/useSellerProfileContext"
  
 const SellerRegistrationForm = () => {
 
+  const {user} = useAuthContext()
   const {dispatch} = useSellerProfileContext()
 
 
@@ -30,7 +32,10 @@ const SellerRegistrationForm = () => {
 
     const response = await fetch("/api/users/seller/createRegistrationDetails",{
       method:"POST",
-      body:formData
+      body:formData,
+      headers:{
+        'Authorization':`${user.email} ${user.token}`
+      }
     })
 
     const json = await response.json()

@@ -1,18 +1,23 @@
 import React, { useState } from 'react'
+import { useSignup } from '../../hooks/authHooks/useSignup'
 
 const Signup = () => {
+
+  const {signup, error, isLoading} = useSignup()
 
   // input fields
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const handleLogin = async(e) => {
+  const handleSignup = async(e) => {
     e.preventDefault()
+
+    await signup(email, password)
   }
 
   return (
     <div className="signupForm" style={{display:"flex", justifyContent:"center"}}>
-      <form onSubmit={handleLogin} style={{position:"absolute", top:"30%" , border:"1px solid black",borderRadius:"10px", width:"25%", padding:"10px"}}>
+      <form onSubmit={handleSignup} style={{position:"absolute", top:"30%" , border:"1px solid black",borderRadius:"10px", width:"25%", padding:"10px"}}>
         <div className="form-group">
           <label>Email</label>
           <input 
@@ -31,7 +36,8 @@ const Signup = () => {
             value={password}
           />
         </div>
-        <button className='btn btn-warning'>SIGN UP</button>
+        <button disabled={isLoading} className='btn btn-warning'>SIGN UP</button>
+        {error && <div className='error'>{error}</div>}
       </form>
     </div>
   )

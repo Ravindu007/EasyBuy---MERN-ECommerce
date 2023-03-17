@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { useAuthContext } from '../../../hooks/authHooks/useAuthContext'
 import { useSellerProductContext } from '../../../hooks/useSellerProductContext'
 
 const ProductFrom = () => {
 
+  const {user} = useAuthContext()
   //product context
   const {dispatch} = useSellerProductContext()
 
@@ -30,7 +32,10 @@ const ProductFrom = () => {
 
     const response = await fetch("/api/users/seller/createProduct", {
       method:"POST",
-      body:formData
+      body:formData,
+      headers:{
+        'Authorization':`${user.email} ${user.token}`
+      }
     })
 
     const json = await response.json()

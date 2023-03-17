@@ -2,10 +2,13 @@ import React, { useState } from 'react'
 
 import "./SellerProductItem.scss"
 import {useSellerProductContext} from "../../../hooks/useSellerProductContext"
+import { useAuthContext } from '../../../hooks/authHooks/useAuthContext'
 
 const SellerProductItem = ({product, showForm}) => {
 
+
   // contexts
+  const {user} = useAuthContext()
   const {dispatch} = useSellerProductContext()
 
 
@@ -31,7 +34,10 @@ const SellerProductItem = ({product, showForm}) => {
 
     const response = await fetch("/api/users/seller/updateProduct/" + product._id,{
       method:"PATCH",
-      body:formData
+      body:formData,
+      headers:{
+        'Authorization':`${user.email} ${user.token}`
+      }
     })  
 
     const json = await response.json()
@@ -47,7 +53,10 @@ const SellerProductItem = ({product, showForm}) => {
     e.preventDefault()
 
     const response = await fetch("/api/users/seller/deleteProduct/" + product._id,{
-      method:"DELETE"
+      method:"DELETE",
+      headers:{
+        'Authorization':`${user.email} ${user.token}`
+      }
     })
     const json = await response.json()
     if(response.ok){
