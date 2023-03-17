@@ -1,8 +1,13 @@
 import React, { useState } from 'react'
 
 import "./SellerProductItem.scss"
+import {useSellerProductContext} from "../../../hooks/useSellerProductContext"
 
 const SellerProductItem = ({product, showForm}) => {
+
+  // contexts
+  const {dispatch} = useSellerProductContext()
+
 
   // editing state 
   const [isEditing , setIsEditing] = useState(false)
@@ -31,10 +36,25 @@ const SellerProductItem = ({product, showForm}) => {
 
     const json = await response.json()
     if(response.ok){
-      console.log(json);
+      dispatch({type:"UPDATE_PRODUCT", payload:json})
       setIsEditing(false)
+      showForm(true)
     }
   }
+
+
+  const handleDelete = async(e)=> {
+    e.preventDefault()
+
+    const response = await fetch("/api/users/seller/deleteProduct/" + product._id,{
+      method:"DELETE"
+    })
+    const json = await response.json()
+    if(response.ok){
+      dispatch({type:"DELETE_PRODUCT", payload:json})
+    }
+  }
+
 
   return (
     <div className="sellerProductItem">
@@ -44,6 +64,7 @@ const SellerProductItem = ({product, showForm}) => {
           <p><strong>Product Name: </strong>{product.productName}</p>
           <p><strong>Product Category: </strong>{product.productCategory}</p>
           <p><strong>Number of items: </strong>{product.numberOfItems}</p>
+          <p><strong>Request to add block chain: </strong>Not send</p>
           <div className="buttons" style={{display:"flex", justifyContent:"space-evenly"}}>
             <button 
               className='btn btn-outline-success'
@@ -58,7 +79,15 @@ const SellerProductItem = ({product, showForm}) => {
               >
                 UPDATE
               </button>
-            <button className='btn btn-outline-danger'>DELETE</button>
+            <button 
+              className='btn btn-outline-danger'
+              onClick={handleDelete}
+            >
+              DELETE
+            </button>
+          </div>
+          <div className="requestButton" style={{display:"flex", justifyContent:"center", marginTop:"5px"}}>
+            <button className='btn btn-outline-warning'>REQUEST</button>
           </div>
         </div>
         <div className="col-8 images" style={{display:"flex"}}>
@@ -82,7 +111,7 @@ const SellerProductItem = ({product, showForm}) => {
           <div className="row">
               <div className="col-4">
                     <div className="form-group">
-                      <label>Number of items</label>
+                    <label>Number of items</label>
                       <input 
                       type="number"
                       className='form-control'
@@ -92,34 +121,54 @@ const SellerProductItem = ({product, showForm}) => {
                     </div>
                     
               </div>
-              <div className="col-8" style={{display:"flex"}}>
-                <div className="form-group">
-                    <label>Product Image 1</label>
-                    <input 
-                      type="file"
-                      className='form-control'
-                      onChange={e=>setDraftProductImage1(e.target.files[0])}
-                      name='productImage1'
-                    />
-                </div>
-                <div className="form-group">
-                  <label>Product Image 2</label>
-                  <input 
-                    type="file"
-                    className='form-control'
-                    onChange={e=>setDraftProductImage2(e.target.files[0])}
-                    name='productImage2'
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Product Image 2</label>
-                  <input 
-                    type="file"
-                    className='form-control'
-                    onChange={e=>setDraftProductImage2(e.target.files[0])}
-                    name='productImage2'
-                  />
-               </div>
+              <div className="col-8 imageUpdates" style={{display:"flex"}}>
+                <div className="row">
+                  <div className="col-4">
+                      <div className="form-group">
+                          <label>Product Image 1</label>
+                          <img src={product.productImage1} className='mx-auto d-block img-fluid'/>
+                          <input 
+                            type="file"
+                            className='form-control'
+                            onChange={e=>{
+                              setDraftProductImage1(e.target.files[0])
+                              product.productImage1 = null
+                            }}
+                            name='productImage1'
+                          />
+                      </div>
+                  </div>
+                  <div className="col-4">
+                      <div className="form-group">
+                      <label>Product Image 2</label>
+                      <img src={product.productImage2} className='mx-auto d-block img-fluid'/>
+                      <input 
+                        type="file"
+                        className='form-control'
+                        onChange={e=>{
+                          setDraftProductImage2(e.target.files[0])
+                          product.productImage2 = null
+                        }}
+                        name='productImage2'
+                      />
+                      </div>
+                  </div>
+                  <div className="col-4">
+                    <div className="form-group">
+                      <label>Product Image 3</label>
+                      <img src={product.productImage3} className='mx-auto d-block img-fluid'/>
+                      <input 
+                        type="file"
+                        className='form-control'
+                        onChange={e=>{
+                          setDraftProductImage3(e.target.files[0])
+                          product.productImage3 = null
+                        }}
+                        name='productImage3'
+                      />
+                    </div>
+                  </div>
+                </div>           
             </div>
           </div>
           <div className="row">

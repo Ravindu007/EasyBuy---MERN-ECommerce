@@ -52,12 +52,16 @@ const ProductFrom = () => {
         </div>
         <div className="form-group">
           <label>Product Category</label>
-          <input 
+          <select
             type="text"
-            className='form-control'
-            onChange={e=>{setProductCategory(e.target.value)}}
+            onChange={e=>setProductCategory(e.target.value)}
             value={productCategory}
-          />
+            className='form-select'
+          >
+            <option>SELECT</option>
+            <option value="cloth">Cloth</option>
+            <option value="electronic">Electronic</option>
+          </select>
         </div>
         <div className="form-group">
           <label>Number of items</label>

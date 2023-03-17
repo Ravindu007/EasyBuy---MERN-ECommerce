@@ -3,7 +3,7 @@ const multer = require("multer")
 
 
 // controllers
-const {getAllSellerProducts, createSellerProduct, updateSellerProduct} = require("../../controllers/sellerControllers")
+const {getAllSellerProducts, createSellerProduct, updateSellerProduct,deleteProduct} = require("../../controllers/sellerControllers")
 
 const router = express.Router()
 
@@ -30,5 +30,8 @@ router.patch("/updateProduct/:id", uploadProduct.fields([
   { name: 'productImage2' },
   { name: 'productImage3' }
 ]), updateSellerProduct)
+
+
+router.delete("/deleteProduct/:id", deleteProduct)
 
 module.exports = router

@@ -40,7 +40,7 @@ const createSellerProduct = async(req,res) => {
             contentType: file.mimetype
           }
         });
-
+   
         stream.on("error", (err) => {
           console.log(err);
           res.status(500).json({ error: 'An error occurred while uploading the images.' });
@@ -94,106 +94,131 @@ const updateSellerProduct = async (req, res) => {
   if (req.files) {
     const { productImage1, productImage2, productImage3 } = req.files;
 
+    const imageUploadPromises = [];
+
     if (productImage1) {
       const fileName = productImage1[0].originalname;
       const fileRef = bucket.file(fileName);
-
+    
       const stream = fileRef.createWriteStream({
         metadata: {
-          contentType: productImage1.mimetype,
+          contentType: productImage1[0].mimetype,
         },
       });
-
+    
       stream.on("error", (err) => {
         console.log(err);
         res
           .status(500)
           .json({ error: "An error occurred while uploading the image." });
       });
-
-      await new Promise((resolve, reject) => {
+    
+      const promise = new Promise((resolve, reject) => {
         stream.on("finish", async () => {
           const imageUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
           updateObj.productImage1 = imageUrl;
-
           resolve();
+          stream.end();
         });
       });
-
-      stream.end(productImage1.buffer);
+    
+      imageUploadPromises.push(promise);
+      stream.end(productImage1[0].buffer);
+      
     }
-
+    
     if (productImage2) {
-      const fileName = productImage2.name;
+      const fileName = productImage2[0].originalname;
       const fileRef = bucket.file(fileName);
-
+    
       const stream = fileRef.createWriteStream({
         metadata: {
-          contentType: productImage2.mimetype,
+          contentType: productImage2[0].mimetype,
         },
       });
-
+    
       stream.on("error", (err) => {
         console.log(err);
         res
           .status(500)
           .json({ error: "An error occurred while uploading the image." });
       });
-
-      await new Promise((resolve, reject) => {
+    
+      const promise = new Promise((resolve, reject) => {
         stream.on("finish", async () => {
           const imageUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
           updateObj.productImage2 = imageUrl;
-
           resolve();
+          stream.end();
         });
       });
-
-      stream.end(productImage2.buffer);
+    
+      imageUploadPromises.push(promise);
+    
+      stream.end(productImage2[0].buffer);
     }
-
+    
     if (productImage3) {
-      const fileName = productImage3.name;
+      const fileName = productImage3[0].originalname;
       const fileRef = bucket.file(fileName);
-
+    
       const stream = fileRef.createWriteStream({
         metadata: {
-          contentType: productImage3.mimetype,
+          contentType: productImage3[0].mimetype,
         },
       });
-
+    
       stream.on("error", (err) => {
         console.log(err);
         res
           .status(500)
           .json({ error: "An error occurred while uploading the image." });
       });
-
-      await new Promise((resolve, reject) => {
+    
+      const promise = new Promise((resolve, reject) => {
         stream.on("finish", async () => {
           const imageUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
           updateObj.productImage3 = imageUrl;
-
           resolve();
+          stream.end();
         });
       });
-
-      stream.end(productImage3.buffer);
+    
+      imageUploadPromises.push(promise);
+    
+      stream.end(productImage3[0].buffer);
     }
+
+    await Promise.all(imageUploadPromises);
   }
 
   try {
-    const product = await productModel.findByIdAndUpdate({_id:id}, updateObj, { new: true });
+    const product = await productModel.findByIdAndUpdate({_id: id},updateObj,{new: true}
+    );
 
     if (!product) {
-      return res.status(404).json({ error: 'Product not found.' });
+      return res.status(404).json({ error: "Product not found." });
     }
 
     res.status(200).json(product);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'An error occurred while updating the product.' });
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating the product." });
+  }
+};
+
+
+const deleteProduct = async(req,res) => {
+  const {id} = req.params
+
+  try {
+    const deletedProduct = await productModel.findByIdAndDelete(id)
+    res.status(200).json(deletedProduct)
+  } catch (error) {
+    res.status(400).json(error)
   }
 }
 
-module.exports = {getAllSellerProducts, createSellerProduct,updateSellerProduct}
+module.exports = {getAllSellerProducts, createSellerProduct,updateSellerProduct,deleteProduct}
