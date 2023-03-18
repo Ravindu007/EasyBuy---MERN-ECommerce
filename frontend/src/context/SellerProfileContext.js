@@ -21,6 +21,14 @@ export const sellerReducer = (state,action) => {
       return{
         sellerProfiles:updatedSellerProfile
       }
+    case 'UPDATE_SINGLE_PROFILE':
+      let updatedProfile = {...state.sellerProfiles}
+      if(updatedProfile._id === action.payload._id){
+        updatedProfile = {...updatedProfile, ...action.payload}
+      }
+      return{
+        sellerProfiles:updatedProfile
+      }
     case 'DELETE_PROFILE':
       if(action.payload && action.payload._id) {
         return {

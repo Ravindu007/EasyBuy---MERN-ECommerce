@@ -20,7 +20,7 @@ const getBusinessRegistrationDetails = async(req,res) => {
 
 // create business registration
 const createBusinessRegistrationDetails = async(req,res) => {
-  const {businessName, businessType,businessOwner,userEmail, businessRegistrationDate,approvalByAdmin, adminComment} = req.body 
+  const {businessName, businessType,businessOwner,userEmail, businessRegistrationDate,approvalByAdmin, adminComment,package} = req.body 
 
   try{
     let fileUrl = null 
@@ -34,7 +34,7 @@ const createBusinessRegistrationDetails = async(req,res) => {
 
       fileUrl = `https://storage.googleapis.com/${bucket.name}/${file.name}`;
       
-      const businessRegistration = await businessRegistrationModel.create({businessName, businessType,businessOwner,userEmail, businessRegistrationDate,approvalByAdmin, adminComment, businessLegalDocument:fileUrl})
+      const businessRegistration = await businessRegistrationModel.create({businessName, businessType,businessOwner,userEmail, businessRegistrationDate,approvalByAdmin, adminComment,package, businessLegalDocument:fileUrl})
 
       res.status(200).json(businessRegistration)
     }
@@ -49,6 +49,11 @@ const updateBusinessRegistrationDetails = async(req,res) => {
 
   try{
     const existingDetails = await businessRegistrationModel.findById(id)
+
+    // update text fields
+    existingDetails.approvalByAdmin = req.body.approvalByAdmin || existingDetails.approvalByAdmin
+    existingDetails.adminComment = req.body.adminComment || existingDetails.adminComment
+    existingDetails.package = req.body.package || existingDetails.package
 
     let fileUrl = null
 
@@ -67,7 +72,8 @@ const updateBusinessRegistrationDetails = async(req,res) => {
 
       res.status(200).json(updatedBusinessRegistrationDetails)
     }else{
-      res.status(400).json({msg:"You need to upload details"})
+      const updatedBusinessRegistrationDetails = await existingDetails.save()
+      res.status(200).json(updatedBusinessRegistrationDetails)
     }
   }catch(error){
     res.status(400).json(error)
@@ -107,7 +113,7 @@ const getAllSellerProducts = async(req,res)=>{
 
 // create product
 const createSellerProduct = async(req,res) => {
-  const {productName,businessId, userEmail, productCategory, numberOfItems } = req.body
+  const {productName,businessId, userEmail, productCategory, numberOfItems} = req.body
 
   try{
     const files = req.files;

@@ -16,6 +16,7 @@ const BusinessRegistrationForm = () => {
   const [businessLegalDocument, setBusinessLegalDocument] = useState(null)
   const [approvalByAdmin, setApprovalByAdmin] = useState(false)
   const [adminComment, setAdminComment] = useState("")
+  const [selectedPackage, setSelectedPackage] = useState(3)
 
   const handleSubmit = async(e) => {
     e.preventDefault()
@@ -29,6 +30,7 @@ const BusinessRegistrationForm = () => {
     formData.append('businessLegalDocument', businessLegalDocument)
     formData.append('approvalByAdmin',approvalByAdmin)
     formData.append('adminComment', "No Comment")
+    formData.append('package',selectedPackage)
 
     const response = await fetch("/api/users/seller/createRegistrationDetails", {
       method:"POST",
@@ -90,6 +92,53 @@ const BusinessRegistrationForm = () => {
             onChange={e=>setBusinessLegalDocument(e.target.files[0])}
             name='businessLegalDocument'
           />
+        </div>
+        <div className="packages">
+        <label>Packages</label>
+        <div className="row">
+          <div className="col-4" style={{display:"flex",flexDirection:"column",alignItems:"center", border:"1px solid black"}}>
+          <h4>3 ITEMS</h4>
+          <h5>USD 5</h5>
+          <label>
+            <input 
+              type="radio" 
+              name="optradio" 
+              value={3} 
+              checked={selectedPackage === 3} 
+              onChange={e=>setSelectedPackage(Number(e.target.value))} 
+            />
+            SELECT
+          </label>
+          </div>
+          <div className="col-4" style={{display:"flex",flexDirection:"column",alignItems:"center", border:"1px solid black"}}>
+          <h4>5 ITEMS</h4>
+          <h5>USD 8</h5>
+          <label>
+            <input 
+              type="radio" 
+              name="optradio" 
+              value={5} 
+              checked={selectedPackage === 5} 
+              onChange={e=>setSelectedPackage(Number(e.target.value))}  
+            />
+            SELECT
+          </label>
+          </div>
+          <div className="col-4" style={{display:"flex",flexDirection:"column",alignItems:"center", border:"1px solid black"}}>
+          <h4>10 ITEMS</h4>
+          <h5>USD 12</h5>
+          <label>
+            <input 
+              type="radio" 
+              name="optradio" 
+              value={10} 
+              checked={selectedPackage === 10} 
+              onChange={e=>setSelectedPackage(Number(e.target.value))}  
+            />
+            SELECT
+          </label>
+          </div>
+        </div>
         </div>
         <button className='btn btn-outline-info'>REQUEST REGISTRATION</button>
       </form>

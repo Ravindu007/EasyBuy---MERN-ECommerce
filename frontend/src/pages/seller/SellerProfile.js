@@ -66,7 +66,7 @@ const SellerProfile = () => {
           <div className="row">
             <div className="col-12">
               {showProfile && (
-                <ProfileItem profile={singleProfile}/>
+                <ProfileItem profile={singleProfile} parentComponent="/seller/ViewProfile"/>
               )}
               {!showProfile && (
                 <>
