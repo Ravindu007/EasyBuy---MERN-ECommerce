@@ -95,8 +95,9 @@ const deleteBusinessRegistrationDetails = async(req,res) => {
 
 // get all products - seller listed
 const getAllSellerProducts = async(req,res)=>{
+  const userEmail = req.query.userEmail
   try {
-    const allProducts = await productModel.find({}).sort({createdAt:-1})
+    const allProducts = await productModel.find({userEmail:userEmail}).sort({createdAt:-1})
     res.status(200).json(allProducts)
   } catch (error) {
     res.status(400).json(error)
@@ -106,7 +107,7 @@ const getAllSellerProducts = async(req,res)=>{
 
 // create product
 const createSellerProduct = async(req,res) => {
-  const {productName, productCategory, numberOfItems} = req.body
+  const {productName, userEmail, productCategory, numberOfItems, sendToAdmin} = req.body
 
   try{
     const files = req.files;
@@ -144,9 +145,7 @@ const createSellerProduct = async(req,res) => {
           if (numUploaded === fileArray.length) {
             try {
               const product = await productModel.create({
-                productName,
-                productCategory,
-                numberOfItems,
+                productName, userEmail, productCategory, numberOfItems, sendToAdmin,
                 productImage1: imageUrls[0],
                 productImage2: imageUrls[1],
                 productImage3: imageUrls[2]

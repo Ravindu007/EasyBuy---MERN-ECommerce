@@ -34,6 +34,7 @@ router.use(requireAuth)
 
 // registrationRoutes
 
+// get gegistration details by email
 router.get("/getAllRegistrationDetails", getBusinessRegistrationDetails)
 
 router.post("/createRegistrationDetails", uploadRegistration.single('businessLegalDocument'), createBusinessRegistrationDetails)

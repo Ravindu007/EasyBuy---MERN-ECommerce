@@ -1,96 +1,92 @@
 import React, { useState } from 'react'
-import { useAuthContext } from '../../../hooks/authHooks/useAuthContext'
+import {useAuthContext} from "../../../hooks/authHooks/useAuthContext"
 import {useSellerProfileContext} from "../../../hooks/useSellerProfileContext"
- 
-const SellerRegistrationForm = () => {
+
+const BusinessRegistrationForm = () => {
 
   const {user} = useAuthContext()
-  const {dispatch} = useSellerProfileContext()
-
+  const {sellerProfiles, dispatch} = useSellerProfileContext()
 
   // input fiels
   const [businessName, setBusinessName] = useState("")
   const [businessType, setBusinessType] = useState("")
   const [businessOwner, setBusinessOwner] = useState("")
+  const [userEmail, setUserEmail] = useState(user.email)
   const [businessRegistrationDate, setBusinessRegistrationDate] = useState("")
   const [businessLegalDocument, setBusinessLegalDocument] = useState(null)
-  
+  const [approvalByAdmin, setApprovalByAdmin] = useState(false)
+  const [adminComment, setAdminComment] = useState("")
 
   const handleSubmit = async(e) => {
     e.preventDefault()
 
-    // details
     const formData = new FormData()
     formData.append('businessName', businessName)
     formData.append('businessType', businessType)
-    formData.append('businessOwner', businessOwner)
-    formData.append('userEmail',user.email)
+    formData.append('businessOwner',businessOwner)
+    formData.append('userEmail',userEmail)
     formData.append('businessRegistrationDate', businessRegistrationDate)
     formData.append('businessLegalDocument', businessLegalDocument)
-    formData.append('approvalByAdmin', false)
+    formData.append('approvalByAdmin',approvalByAdmin)
     formData.append('adminComment', "No Comment")
 
-
-    const response = await fetch("/api/users/seller/createRegistrationDetails",{
+    const response = await fetch("/api/users/seller/createRegistrationDetails", {
       method:"POST",
       body:formData,
       headers:{
         'Authorization':`${user.email} ${user.token}`
       }
     })
-
     const json = await response.json()
     if(response.ok){
       dispatch({type:"CREATE_PROFILE", payload:json})
     }
   }
 
-
-
   return (
-    <div className="sellerRegistrationForm">
+    <div className="businessRegistrationForm">
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Bisness Name</label>
+          <label>Business Name</label>
           <input 
             type="text"
-            className='form-control'
+            className='form-control' 
             onChange={e=>setBusinessName(e.target.value)}
             value={businessName}
           />
         </div>
         <div className="form-group">
-          <label>Bisness Type</label>
+          <label>Business Type</label>
           <input 
             type="text"
-            className='form-control'
+            className='form-control' 
             onChange={e=>setBusinessType(e.target.value)}
             value={businessType}
           />
         </div>
         <div className="form-group">
-          <label>Bisness Owner</label>
+          <label>Business Owner</label>
           <input 
             type="text"
-            className='form-control'
+            className='form-control' 
             onChange={e=>setBusinessOwner(e.target.value)}
             value={businessOwner}
           />
         </div>
         <div className="form-group">
-          <label>Bisness RegistrationDate</label>
+          <label>Business RegistrationDate</label>
           <input 
             type="date"
-            className='form-control'
+            className='form-control' 
             onChange={e=>setBusinessRegistrationDate(e.target.value)}
             value={businessRegistrationDate}
           />
         </div>
         <div className="form-group">
-          <label>Legal Document</label>
+          <label>Business Legal Document</label>
           <input 
             type="file"
-            className='form-control'
+            className='form-control' 
             onChange={e=>setBusinessLegalDocument(e.target.files[0])}
             name='businessLegalDocument'
           />
@@ -101,4 +97,4 @@ const SellerRegistrationForm = () => {
   )
 }
 
-export default SellerRegistrationForm
+export default BusinessRegistrationForm

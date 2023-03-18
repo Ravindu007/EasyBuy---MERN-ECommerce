@@ -2,67 +2,64 @@ import React, { useState } from 'react'
 import { useAuthContext } from '../../../hooks/authHooks/useAuthContext'
 import { useSellerProductContext } from '../../../hooks/useSellerProductContext'
 
-const ProductFrom = () => {
-
+const ProductForm = () => {
   const {user} = useAuthContext()
-  //product context
   const {dispatch} = useSellerProductContext()
 
-
-  // input fields
+  // input fields 
   const [productName, setProductName] = useState("")
   const [productCategory, setProductCategory] = useState("")
-  const [numberOfItems, setNumberOfItems] = useState(0)
+  const [numberOfItems, setNumberOfItems] = useState("")
   const [productImage1, setProductImage1] = useState(null)
   const [productImage2, setProductImage2] = useState(null)
   const [productImage3, setProductImage3] = useState(null)
 
-
-  const handleSubmit = async(e) => {
+  const addProduct = async(e) => {
     e.preventDefault()
 
     const formData = new FormData()
-    formData.append('productName' , productName)
+    formData.append('productName', productName)
+    formData.append('userEmail',user.email)
     formData.append('productCategory', productCategory)
-    formData.append('numberOfItems', numberOfItems)
+    formData.append('numberOfItems',numberOfItems)
     formData.append('productImage1', productImage1)
     formData.append('productImage2', productImage2)
-    formData.append('productImage3', productImage3)
-    formData.append('sendToAdmin', false)
+    formData.append('productImage3',productImage3)
+    formData.append('sendToAdmin',false)
 
-    const response = await fetch("/api/users/seller/createProduct", {
+    const response = await fetch("/api/users/seller/createProduct",{
       method:"POST",
       body:formData,
       headers:{
         'Authorization':`${user.email} ${user.token}`
       }
     })
-
     const json = await response.json()
     if(response.ok){
-      dispatch({type:"CREATE_PRODUCT", payload:json})
+      console.log(json);
+      // dispatch({type:"CREATE_PRODUCT", payload:json})
     }
   }
 
+
   return (
-    <div className='productForm'>
-      <form onSubmit={handleSubmit}>
+    <div className="productForm">
+      <form onSubmit={addProduct}>
         <div className="form-group">
           <label>Product Name</label>
           <input 
-            type="text"
+            type="text" 
             className='form-control'
-            onChange={e=>{setProductName(e.target.value)}}
+            onChange={e=>setProductName(e.target.value)}
             value={productName}
           />
         </div>
         <div className="form-group">
           <label>Product Category</label>
           <select
-            type="text"
+            className='form-select'
             onChange={e=>setProductCategory(e.target.value)}
             value={productCategory}
-            className='form-select'
           >
             <option>SELECT</option>
             <option value="cloth">Cloth</option>
@@ -70,45 +67,45 @@ const ProductFrom = () => {
           </select>
         </div>
         <div className="form-group">
-          <label>Number of items</label>
+          <label>Number of Items</label>
           <input 
-            type="number"
+            type="number" 
             className='form-control'
-            onChange={e=>{setNumberOfItems(e.target.value)}}
+            onChange={e=>setNumberOfItems(e.target.value)}
             value={numberOfItems}
           />
         </div>
         <div className="form-group">
           <label>Product Image 1</label>
           <input 
-            type="file"
+            type="file" 
             className='form-control'
-            onChange={e=>{setProductImage1(e.target.files[0])}}
+            onChange={e=>setProductImage1(e.target.files[0])}
             name='productImage1'
           />
         </div>
         <div className="form-group">
           <label>Product Image 2</label>
           <input 
-            type="file"
+            type="file" 
             className='form-control'
-            onChange={e=>{setProductImage2(e.target.files[0])}}
+            onChange={e=>setProductImage2(e.target.files[0])}
             name='productImage2'
           />
         </div>
         <div className="form-group">
           <label>Product Image 3</label>
           <input 
-            type="file"
+            type="file" 
             className='form-control'
-            onChange={e=>{setProductImage3(e.target.files[0])}}
+            onChange={e=>setProductImage3(e.target.files[0])}
             name='productImage3'
           />
         </div>
-        <button className='btn btn-primary'>ADD</button>
+        <button className='btn btn-outline-primary'>ADD</button>
       </form>
     </div>
   )
 }
 
-export default ProductFrom
+export default ProductForm

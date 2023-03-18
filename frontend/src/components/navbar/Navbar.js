@@ -57,7 +57,7 @@ const Navbar = ({isAdmin}) => {
             {/* seller  */}
             {user && (
               <li className="nav-item">
-              <Link to="/seller/viewProducts" className='nav-link'>View products</Link>
+              <Link to="/seller/ViewProfile" className='nav-link'>Seller Profile</Link>
               </li>
             )}
          </ul>

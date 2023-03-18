@@ -4,10 +4,10 @@ import AdminPannel from "./pages/admin/AdminPannel";
 import ProductManagement from "./pages/admin/ProductManagement";
 import SellerManagement from "./pages/admin/SellerManagement";
 import Home from "./pages/Home";
-import ViewAllProducts from "./pages/seller/ViewAllProducts";
 import Signup from "./pages/userForms/Signup";
 import Login from "./pages/userForms/Login"
 import { useAuthContext } from "./hooks/authHooks/useAuthContext";
+import SellerProfile from "./pages/seller/SellerProfile";
 
 function App() {
   const {user} = useAuthContext()
@@ -42,7 +42,7 @@ function App() {
 
 
             {/* Routes for sellers */}
-            <Route path="/seller/viewProducts" element={user ? <ViewAllProducts/> : <Navigate to="/login"/>}/>
+            <Route path="/seller/ViewProfile" element={user ? <SellerProfile/> : <Navigate to="/login"/>}/>
           </Routes>
         </div>
       </BrowserRouter>
