@@ -21,7 +21,7 @@ export const sellerReducer = (state,action) => {
       return{
         sellerProfiles:updatedSellerProfile
       }
-    case 'DELETE_PRODUCT':
+    case 'DELETE_PROFILE':
       if(action.payload && action.payload._id) {
         return {
           sellerProfiles:state.sellerProfiles.filter((sellerProfile)=>sellerProfile._id !== action.payload._id)
