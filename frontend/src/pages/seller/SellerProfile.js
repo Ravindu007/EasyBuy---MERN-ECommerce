@@ -95,7 +95,7 @@ const SellerProfile = () => {
           {showProfile && singleProfile.approvalByAdmin === true && (
             <>
             <p>show Create product</p>
-              <ProductForm/>
+              <ProductForm business={singleProfile}/>
             </>
           )}
         </div>

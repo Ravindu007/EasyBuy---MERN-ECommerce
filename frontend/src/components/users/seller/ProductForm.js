@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useAuthContext } from '../../../hooks/authHooks/useAuthContext'
 import { useSellerProductContext } from '../../../hooks/useSellerProductContext'
 
-const ProductForm = () => {
+const ProductForm = ({business}) => {
   const {user} = useAuthContext()
   const {dispatch} = useSellerProductContext()
 
@@ -20,12 +20,12 @@ const ProductForm = () => {
     const formData = new FormData()
     formData.append('productName', productName)
     formData.append('userEmail',user.email)
+    formData.append('businessId', business._id)
     formData.append('productCategory', productCategory)
     formData.append('numberOfItems',numberOfItems)
     formData.append('productImage1', productImage1)
     formData.append('productImage2', productImage2)
     formData.append('productImage3',productImage3)
-    formData.append('sendToAdmin',false)
 
     const response = await fetch("/api/users/seller/createProduct",{
       method:"POST",
@@ -36,8 +36,7 @@ const ProductForm = () => {
     })
     const json = await response.json()
     if(response.ok){
-      console.log(json);
-      // dispatch({type:"CREATE_PRODUCT", payload:json})
+      dispatch({type:"CREATE_PRODUCT", payload:json})
     }
   }
 

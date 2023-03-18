@@ -107,7 +107,7 @@ const getAllSellerProducts = async(req,res)=>{
 
 // create product
 const createSellerProduct = async(req,res) => {
-  const {productName, userEmail, productCategory, numberOfItems, sendToAdmin} = req.body
+  const {productName,businessId, userEmail, productCategory, numberOfItems } = req.body
 
   try{
     const files = req.files;
@@ -145,7 +145,7 @@ const createSellerProduct = async(req,res) => {
           if (numUploaded === fileArray.length) {
             try {
               const product = await productModel.create({
-                productName, userEmail, productCategory, numberOfItems, sendToAdmin,
+                productName, userEmail,businessId, productCategory, numberOfItems,
                 productImage1: imageUrls[0],
                 productImage2: imageUrls[1],
                 productImage3: imageUrls[2]
@@ -179,6 +179,7 @@ const updateSellerProduct = async (req, res) => {
   if (numberOfItems) {
     updateObj.numberOfItems = numberOfItems;
   }
+
 
   if (req.files) {
     const { productImage1, productImage2, productImage3 } = req.files;

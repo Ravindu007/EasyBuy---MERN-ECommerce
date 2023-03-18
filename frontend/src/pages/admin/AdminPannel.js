@@ -9,9 +9,6 @@ const AdminPannel = () => {
       <div className="buttons">
         <Link to={"/admin/sellerManagement"}>
            <button className='btn btn-outline-secondary'>USER MANAGEMENT</button>
-        </Link>
-        <Link to={"/admin/productManagement"}>
-           <button className='btn btn-outline-primary'>PRODUCT MANAGEMENT</button>
         </Link>    
       </div>
     </div>

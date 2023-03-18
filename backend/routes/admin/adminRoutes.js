@@ -3,7 +3,10 @@ const multer = require("multer")
 
 
 // controllers
-const {getAllBusinessRegistrationDetails, giveAdminApprovalToBusiness} = require("../../controllers/adminControllers")
+const {
+  getAllBusinessRegistrationDetails, giveAdminApprovalToBusiness,
+  getAllSentToAdminProducts
+} = require("../../controllers/adminControllers")
 
 
 // middleware
@@ -20,11 +23,12 @@ const upload = multer({
 router.use(requireAuth)
 
 
-// admin routes
+// admin routes - business details / registrations
 router.get("/getAllRegistrationDetails", getAllBusinessRegistrationDetails)
 
 // give approval to bsiness
 router.patch("/registrationDetails/approval/:id", upload.none() ,giveAdminApprovalToBusiness )
+
 
 
 

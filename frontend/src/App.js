@@ -1,7 +1,6 @@
 import {BrowserRouter, Routes,Route, Navigate} from "react-router-dom"
 import Navbar from "./components/navbar/Navbar";
 import AdminPannel from "./pages/admin/AdminPannel";
-import ProductManagement from "./pages/admin/ProductManagement";
 import SellerManagement from "./pages/admin/SellerManagement";
 import Home from "./pages/Home";
 import Signup from "./pages/userForms/Signup";
@@ -36,7 +35,6 @@ function App() {
               <>
               <Route path="/admin" element={user ? <AdminPannel/> :<Navigate to="/login"/> }/>
               <Route path="/admin/sellerManagement" element={user ? <SellerManagement/>: <Navigate to="/login"/>}/>
-              <Route path="/admin/productManagement" element={user ?<ProductManagement/>: <Navigate to="/login"/>}/>
               </>
             )}
 

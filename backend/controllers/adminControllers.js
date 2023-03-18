@@ -1,5 +1,4 @@
 const businessRegistrationModel = require("../models/businessRegistrationModel")
-const productModel = require("../models/productModel")
 
 const {admin}  = require("../server")
 const bucket  = admin.storage().bucket(process.env.BUCKET)
@@ -34,4 +33,7 @@ const giveAdminApprovalToBusiness = async(req,res) => {
 }
 
 
-module.exports = {getAllBusinessRegistrationDetails, giveAdminApprovalToBusiness}
+
+module.exports = {
+  getAllBusinessRegistrationDetails, giveAdminApprovalToBusiness
+}
