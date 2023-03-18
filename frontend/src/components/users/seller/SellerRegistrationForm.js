@@ -24,6 +24,7 @@ const SellerRegistrationForm = () => {
     formData.append('businessName', businessName)
     formData.append('businessType', businessType)
     formData.append('businessOwner', businessOwner)
+    formData.append('userEmail',user.email)
     formData.append('businessRegistrationDate', businessRegistrationDate)
     formData.append('businessLegalDocument', businessLegalDocument)
     formData.append('approvalByAdmin', false)

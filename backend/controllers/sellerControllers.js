@@ -7,10 +7,11 @@ const bucket  = admin.storage().bucket(process.env.BUCKET)
 
 // business Registration 
 
-// get business registration Details
+// get business registration Details reated to email
 const getBusinessRegistrationDetails = async(req,res) => {
+  const userEmail = req.query.userEmail
   try{
-    const details = await businessRegistrationModel.find({}).sort({createdAt:-1})
+    const details = await businessRegistrationModel.findOne({userEmail:userEmail})
     res.status(200).json(details)
   }catch(error){
     res.status(400).json(error)
@@ -19,7 +20,7 @@ const getBusinessRegistrationDetails = async(req,res) => {
 
 // create business registration
 const createBusinessRegistrationDetails = async(req,res) => {
-  const {businessName, businessType,businessOwner,businessRegistrationDate,approvalByAdmin, adminComment} = req.body 
+  const {businessName, businessType,businessOwner,userEmail, businessRegistrationDate,approvalByAdmin, adminComment} = req.body 
 
   try{
     let fileUrl = null 
@@ -33,7 +34,7 @@ const createBusinessRegistrationDetails = async(req,res) => {
 
       fileUrl = `https://storage.googleapis.com/${bucket.name}/${file.name}`;
       
-      const businessRegistration = await businessRegistrationModel.create({businessName, businessType,businessOwner,businessRegistrationDate,approvalByAdmin, adminComment, businessLegalDocument:fileUrl})
+      const businessRegistration = await businessRegistrationModel.create({businessName, businessType,businessOwner,userEmail, businessRegistrationDate,approvalByAdmin, adminComment, businessLegalDocument:fileUrl})
 
       res.status(200).json(businessRegistration)
     }

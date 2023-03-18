@@ -14,7 +14,7 @@ export const sellerReducer = (state,action) => {
       }
     case 'CREATE_PROFILE':
       return{
-        sellerProfiles:[action.payload, ...state.sellerProfiles]
+        sellerProfiles:action.payload 
       }
     case 'UPDATE_PROFILE':
       const updatedSellerProfile = state.sellerProfiles.map(sellerProfile => sellerProfile._id === action.payload._id ? action.payload : sellerProfile)

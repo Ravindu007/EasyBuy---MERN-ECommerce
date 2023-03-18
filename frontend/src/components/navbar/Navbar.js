@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
 import { useLogout } from '../../hooks/authHooks/useLogout'
 
-const Navbar = () => {
+const Navbar = ({isAdmin}) => {
   const {user} = useAuthContext()
 
   const {logout} = useLogout()
@@ -48,11 +48,11 @@ const Navbar = () => {
 
 
             {/* Admin Pannel */}
-            {user && (
-              <li className="nav-item">
-                <Link to="/admin" className='nav-link'>Admin</Link>
-               </li>
+            {isAdmin && (
+              <li className="nav-item"><Link to="/admin" className='nav-link'>Admin</Link></li>
             )}
+            
+             
 
             {/* seller  */}
             {user && (

@@ -12,10 +12,16 @@ import { useAuthContext } from "./hooks/authHooks/useAuthContext";
 function App() {
   const {user} = useAuthContext()
 
+  let isAdmin = null
+  if(user){
+     isAdmin = user && user.email === process.env.REACT_APP_ADMIN_EMAIL
+  }
+  
+
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar/> 
+        <Navbar isAdmin={isAdmin}/> 
         <div className="pages">
           <Routes>
             {/* Router for home page */}
@@ -26,9 +32,13 @@ function App() {
             <Route path="/login" element={!user ? <Login /> : <Navigate to="/"/>}/>
 
             {/* route for admin */}
-            <Route path="/admin" element={user ? <AdminPannel/> :<Navigate to="/login"/> }/>
-            <Route path="/admin/sellerManagement" element={user ? <SellerManagement/>: <Navigate to="/login"/>}/>
-            <Route path="/admin/productManagement" element={user ?<ProductManagement/>: <Navigate to="/login"/>}/>
+            {isAdmin &&  (
+              <>
+              <Route path="/admin" element={user ? <AdminPannel/> :<Navigate to="/login"/> }/>
+              <Route path="/admin/sellerManagement" element={user ? <SellerManagement/>: <Navigate to="/login"/>}/>
+              <Route path="/admin/productManagement" element={user ?<ProductManagement/>: <Navigate to="/login"/>}/>
+              </>
+            )}
 
 
             {/* Routes for sellers */}
