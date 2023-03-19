@@ -1,9 +1,130 @@
-import React from 'react'
+import React, { useState , useEffect} from 'react'
+import QrScanner from 'qr-scanner';
+import {useSellerProductContext} from "../hooks/useSellerProductContext"
 
 const Home = () => {
+  const [isLoadingDetails, setIsLoadingDetails] = useState(true)
+
+  const {sellerProducts:singleProduct, dispatch} = useSellerProductContext()
+  const [noMatchFound, setNoMatchFound] = useState(false)
+
+
+  const [showCameraDevision, setShowCameraDevision] = useState(false)
+  const show = () => {
+    setShowCameraDevision(!showCameraDevision)
+    setIsLoadingDetails(true)
+  }
+
+  const [readQR, setReadQR] = useState("")
+
+  // do not delete this part. this will triger the scan each time new input detected
+  useEffect(() => {
+    if (readQR && !showAuthenticityButton) {
+      alert('Please press the authenticity button');
+    }
+  }, []);
+
+  const scanQR = () => {
+    const qrScanner = new QrScanner(
+      document.getElementById('cam'),
+      result => setReadQR(result),
+      setNoMatchFound(false),
+      setShowAuthenticityButton(true),
+    );
+
+    qrScanner.start();
+  }
+  
+
+  const [showAuthenticityButton, setShowAuthenticityButton] = useState(false)
+
+  const checkAuthenticity = async(e) => {
+    const response = await fetch(`/api/users/consumer/getScanDetails?result=${readQR}`)
+    const json = await response.json()
+    if(response.ok){
+      setIsLoadingDetails(false)
+      if(json === null){
+        setShowAuthenticityButton(false)
+        setReadQR("")
+        scanQR()
+        setNoMatchFound(true);
+      }else{
+        dispatch({type:"GET_SINGLE_PRODUCT", payload:json})
+        setShowAuthenticityButton(false)
+        setReadQR("")
+        scanQR()
+      }
+    }
+  }
+
+
+  // click on view more button
+  const [viewDescription, setViewDiscription] = useState(false)
+
+  const showDescription = () => {
+    setViewDiscription(!viewDescription)
+  }
+
   return (
     <div className='home'>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam perferendis similique quaerat, aut consectetur magni illo, quidem eos unde optio necessitatibus officiis repudiandae molestias veritatis vitae facilis odio tempora voluptates.</p>
+      <div className="row">
+        <div className="col-8">
+          <p>block chain added product</p>
+        </div>
+        <div className="col-4">
+          <div className="row">
+            <div className="col-12" style={{display:"flex", flexDirection:"column"}}>
+              <p>pop up camera</p>
+              <button 
+                className='btn btn-outline-primary'
+                onClick={show}
+              >
+                OPEN CAMERA
+              </button>
+              {showCameraDevision && (
+                <>
+                <video id='cam'></video>
+                <button className='btn btn-warning' onClick={scanQR}>SCAN</button>
+                </>
+              )}
+            </div>
+            <div className="col-12">
+              <p>scanned details</p>
+              {readQR && (
+                  showAuthenticityButton && (
+                    <button 
+                    className=''
+                    onClick={checkAuthenticity}
+                    >
+                      CHECK AUTHENTICITY
+                  </button>
+                  )
+              )}
+            </div>
+            {isLoadingDetails ? null : ( 
+              <div className="col-12">
+              {noMatchFound && (
+                <>
+                <p>No match found in Our block chain</p>
+                <button>Report</button>
+                </>
+              )}
+              {singleProduct && !noMatchFound && (
+                <>
+                  <p><strong>AUTHENTIC</strong></p>
+                  <button onClick={showDescription}>View more</button>
+                  {viewDescription && (
+                    <>
+                      <p><strong>Product Name: </strong>{singleProduct.productName}</p>
+                    </>
+                  )}
+                </>
+              )}
+            </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

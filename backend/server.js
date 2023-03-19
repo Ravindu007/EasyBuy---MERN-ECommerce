@@ -21,6 +21,7 @@ module.exports = {admin:admin}
 const userRoutes = require("./routes/userRoutes")
 const sellerRoutes = require("./routes/users/sellerRoutes")
 const adminRoutes = require("./routes/admin/adminRoutes")
+const consumerRoutes = require("./routes/users/consumerRoutes")
 
 
 
@@ -48,6 +49,8 @@ app.use("/api/authUsers",userRoutes)
 app.use("/api/admin",adminRoutes)
 // seller routes
 app.use("/api/users/seller",sellerRoutes )
+// user routes
+app.use("/api/users/consumer", consumerRoutes)
 
 
 

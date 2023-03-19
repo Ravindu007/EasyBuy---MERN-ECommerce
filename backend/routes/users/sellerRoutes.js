@@ -41,7 +41,7 @@ router.post("/createRegistrationDetails", uploadRegistration.single('businessLeg
 
 router.patch("/updateRegistrationDetails/:id", uploadRegistration.single('businessLegalDocument'),updateBusinessRegistrationDetails)
 
-router.patch("/UpdateQR/details/:id", uploadRegistration.single('QRcode'),updateSellerProductQRCode)
+router.patch("/UpdateQR/details/:id", uploadProduct.single('QRcode'),updateSellerProductQRCode)
 
 router.delete("/deleteRegistrationDetails/:id", deleteBusinessRegistrationDetails)
 
