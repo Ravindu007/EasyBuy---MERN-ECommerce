@@ -115,7 +115,7 @@ const getAllSellerProducts = async(req,res)=>{
 
 // create product
 const createSellerProduct = async(req,res) => {
-  const {productName,businessId, userEmail, productCategory, numberOfItems,requestedToAddToBlockChain} = req.body
+  const {productName,businessId, userEmail, productCategory, numberOfItems,requestedToAddToBlockChain, blockChainId} = req.body
 
   try{
     const files = req.files;
@@ -153,7 +153,7 @@ const createSellerProduct = async(req,res) => {
           if (numUploaded === fileArray.length) {
             try {
               const product = await productModel.create({
-                productName, userEmail,businessId, productCategory, numberOfItems,requestedToAddToBlockChain,
+                productName, userEmail,businessId, productCategory, numberOfItems,requestedToAddToBlockChain,blockChainId,
                 productImage1: imageUrls[0],
                 productImage2: imageUrls[1],
                 productImage3: imageUrls[2]
@@ -180,7 +180,7 @@ const createSellerProduct = async(req,res) => {
 const updateSellerProduct = async (req, res) => {
   const { id } = req.params;
 
-  const { numberOfItems, requestedToAddToBlockChain } = req.body;
+  const { numberOfItems, requestedToAddToBlockChain,blockChainId } = req.body;
 
   const updateObj = {};
 
@@ -190,6 +190,10 @@ const updateSellerProduct = async (req, res) => {
 
   if(requestedToAddToBlockChain){
     updateObj.requestedToAddToBlockChain = requestedToAddToBlockChain;
+  }
+
+  if(blockChainId){
+    updateObj.blockChainId = blockChainId
   }
 
 

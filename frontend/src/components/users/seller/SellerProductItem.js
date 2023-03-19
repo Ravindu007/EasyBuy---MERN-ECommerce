@@ -3,6 +3,9 @@ import { useAuthContext } from '../../../hooks/authHooks/useAuthContext'
 import { useSellerProductContext } from '../../../hooks/useSellerProductContext'
 import { useSellerProfileContext } from '../../../hooks/useSellerProfileContext'
 
+// blockchain 
+import {generateBlockChainID} from "../../../bloackChain/generateBlockchainId"
+
 import "./SellerProductItem.scss"
 
 const SellerProductItem = ({product, business}) => {
@@ -80,7 +83,12 @@ const SellerProductItem = ({product, business}) => {
   const requestToAdd = async(e) => {
 
     if(business.productsPublished < business.package){
-        // update the items published
+
+        // generate unique key 
+        const blockChainId = generateBlockChainID(product._id, business._id)
+
+
+        // update the items published - business Registraion details
         const formData = new FormData()
         formData.append('productsPublished', business.productsPublished+1)
 
@@ -98,9 +106,10 @@ const SellerProductItem = ({product, business}) => {
         }
 
 
-        // patch request to product 
+        // patch request to product details
         const formData2 = new FormData()
         formData2.append('requestedToAddToBlockChain', true)
+        formData2.append('blockChainId', blockChainId)
 
         const response2 = await fetch("/api/users/seller/updateProduct/" + product._id,{
           method:"PATCH",

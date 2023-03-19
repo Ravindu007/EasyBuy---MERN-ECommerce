@@ -29,6 +29,7 @@ const ProductForm = ({business}) => {
     formData.append('productImage2', productImage2)
     formData.append('productImage3',productImage3)
     formData.append('requestedToAddToBlockChain',false)
+    formData.append('blockChainId',"NO ID YET")
 
     const response = await fetch("/api/users/seller/createProduct",{
       method:"POST",
