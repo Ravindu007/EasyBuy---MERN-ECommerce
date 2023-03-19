@@ -4,7 +4,7 @@ const multer = require("multer")
 
 // controllers
 const {
-  getScanDetails
+  getScanDetails,getAllAuthenticatedProducts
 } = require("../../controllers/consumerControllers")
 
 const router = express.Router()
@@ -14,5 +14,8 @@ const router = express.Router()
 
 // get scan details
 router.get("/getScanDetails", getScanDetails)
+
+// get all authenticated products
+router.get("/getAllAuthenticatedProducts", getAllAuthenticatedProducts)
 
 module.exports = router

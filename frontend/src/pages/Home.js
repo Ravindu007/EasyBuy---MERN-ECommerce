@@ -1,8 +1,15 @@
 import React, { useState , useEffect} from 'react'
 import QrScanner from 'qr-scanner';
 import {useSellerProductContext} from "../hooks/useSellerProductContext"
+import AuthenticProductItem from '../components/users/consumer/AuthenticProductItem';
+import { useAuthenticProductContext } from '../hooks/useAuthenticProductContext';
 
+
+ 
 const Home = () => {
+
+
+  /** ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////**/
   const [isLoadingDetails, setIsLoadingDetails] = useState(true)
 
   const {sellerProducts:singleProduct, dispatch} = useSellerProductContext()
@@ -39,6 +46,7 @@ const Home = () => {
   const [showAuthenticityButton, setShowAuthenticityButton] = useState(false)
 
   const checkAuthenticity = async(e) => {
+  
     const response = await fetch(`/api/users/consumer/getScanDetails?result=${readQR}`)
     const json = await response.json()
     if(response.ok){
@@ -65,11 +73,37 @@ const Home = () => {
     setViewDiscription(!viewDescription)
   }
 
+  /** ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////**/
+
+  const {authenticProducts, dispatch:dispatchAuthentics} = useAuthenticProductContext()
+
+
+  useEffect(()=>{
+    const fetchAllAuthentic = async() => {
+      const response = await fetch("/api/users/consumer/getAllAuthenticatedProducts")
+      const json = await response.json()
+  
+      if(response.ok){
+        dispatchAuthentics({type:"GET_ALL_AUTHENTICS", payload:json})
+      }
+    }
+    
+    fetchAllAuthentic()
+
+  },[])
+
+
+
+
+
   return (
     <div className='home'>
       <div className="row">
         <div className="col-8">
           <p>block chain added product</p>
+          {Array.isArray(authenticProducts) && authenticProducts.map((product)=>(
+              <AuthenticProductItem key={product._id} product={product}/>
+          ))}
         </div>
         <div className="col-4">
           <div className="row">
@@ -116,6 +150,8 @@ const Home = () => {
                   {viewDescription && (
                     <>
                       <p><strong>Product Name: </strong>{singleProduct.productName}</p>
+                      <p><strong>Business Email: </strong>{singleProduct.userEmail}</p>
+                      <p><strong>Product Category: </strong>{singleProduct.productCategory}</p>
                     </>
                   )}
                 </>

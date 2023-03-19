@@ -11,5 +11,14 @@ const getScanDetails = async(req, res) => {
   }
 }
 
+const getAllAuthenticatedProducts = async(req,res)=>{
+  try{
+    const allAuthenticProducts = await productModel.find({requestedToAddToBlockChain:true}).sort({createdAt:-1})
+    res.status(200).json(allAuthenticProducts)
+  }catch(error){
+    res.status(400).json(error)
+  }
+}
 
-module.exports = {getScanDetails}
+
+module.exports = {getScanDetails,getAllAuthenticatedProducts}
