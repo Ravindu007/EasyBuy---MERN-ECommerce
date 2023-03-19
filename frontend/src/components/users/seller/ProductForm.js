@@ -16,6 +16,7 @@ const ProductForm = ({business}) => {
   const [productImage2, setProductImage2] = useState(null)
   const [productImage3, setProductImage3] = useState(null)
 
+
   const addProduct = async(e) => {
     e.preventDefault()
 
@@ -30,6 +31,7 @@ const ProductForm = ({business}) => {
     formData.append('productImage3',productImage3)
     formData.append('requestedToAddToBlockChain',false)
     formData.append('blockChainId',"NO ID YET")
+    formData.append('QRcode', null)
 
     const response = await fetch("/api/users/seller/createProduct",{
       method:"POST",

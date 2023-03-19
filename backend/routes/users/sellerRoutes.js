@@ -4,7 +4,7 @@ const multer = require("multer")
 
 // controllers
 const {
-  getAllSellerProducts, createSellerProduct, updateSellerProduct,deleteProduct,
+  getAllSellerProducts, createSellerProduct, updateSellerProduct,updateSellerProductQRCode,deleteProduct,
 
   getBusinessRegistrationDetails, createBusinessRegistrationDetails, updateBusinessRegistrationDetails, deleteBusinessRegistrationDetails, 
 
@@ -40,6 +40,8 @@ router.get("/getAllRegistrationDetails", getBusinessRegistrationDetails)
 router.post("/createRegistrationDetails", uploadRegistration.single('businessLegalDocument'), createBusinessRegistrationDetails)
 
 router.patch("/updateRegistrationDetails/:id", uploadRegistration.single('businessLegalDocument'),updateBusinessRegistrationDetails)
+
+router.patch("/UpdateQR/details/:id", uploadRegistration.single('QRcode'),updateSellerProductQRCode)
 
 router.delete("/deleteRegistrationDetails/:id", deleteBusinessRegistrationDetails)
 

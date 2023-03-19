@@ -115,7 +115,7 @@ const getAllSellerProducts = async(req,res)=>{
 
 // create product
 const createSellerProduct = async(req,res) => {
-  const {productName,businessId, userEmail, productCategory, numberOfItems,requestedToAddToBlockChain, blockChainId} = req.body
+  const {productName,businessId, userEmail, productCategory, numberOfItems,requestedToAddToBlockChain, blockChainId, QRcode} = req.body
 
   try{
     const files = req.files;
@@ -153,7 +153,7 @@ const createSellerProduct = async(req,res) => {
           if (numUploaded === fileArray.length) {
             try {
               const product = await productModel.create({
-                productName, userEmail,businessId, productCategory, numberOfItems,requestedToAddToBlockChain,blockChainId,
+                productName, userEmail,businessId, productCategory, numberOfItems,requestedToAddToBlockChain,blockChainId,QRcode,
                 productImage1: imageUrls[0],
                 productImage2: imageUrls[1],
                 productImage3: imageUrls[2]
@@ -176,7 +176,7 @@ const createSellerProduct = async(req,res) => {
 }
 
 
-// update
+// update - product
 const updateSellerProduct = async (req, res) => {
   const { id } = req.params;
 
@@ -294,7 +294,7 @@ const updateSellerProduct = async (req, res) => {
     
       stream.end(productImage3[0].buffer);
     }
-
+    
     await Promise.all(imageUploadPromises);
   }
 
@@ -315,6 +315,45 @@ const updateSellerProduct = async (req, res) => {
   }
 };
 
+// adding qr code to product
+const updateSellerProductQRCode = async(req,res) => {
+  const { id } = req.params;
+
+  try {
+    const existingProduct = await productModel.findById(id)
+
+  
+  if (req.file) { 
+      const filename = req.file.originalname
+      const file = bucket.file(filename)
+
+      const stream = file.createWriteStream({
+        metadata:{
+          contentType:req.file.mimetype
+        }
+      })
+
+      stream.on("error",(err)=>{
+        console.error(err);
+      })
+
+      stream.on("finish",async()=>{
+        imgUrl = `https://storage.googleapis.com/${bucket.name}/${filename}`;
+
+        existingProduct.QRcode = imgUrl
+
+        const updatedProduct = await existingProduct.save()
+        res.status(200).json(updatedProduct)
+      })
+      stream.end(req.file.buffer)
+    }
+
+  } catch (error) {
+    res.status(400).json(error)
+  }
+  
+}
+
 
 const deleteProduct = async(req,res) => {
   const {id} = req.params
@@ -328,7 +367,7 @@ const deleteProduct = async(req,res) => {
 }
 
 module.exports = {
-  getAllSellerProducts, createSellerProduct,updateSellerProduct,deleteProduct,
+  getAllSellerProducts, createSellerProduct,updateSellerProduct,updateSellerProductQRCode,deleteProduct,
   
   getBusinessRegistrationDetails, createBusinessRegistrationDetails, updateBusinessRegistrationDetails, deleteBusinessRegistrationDetails,
   

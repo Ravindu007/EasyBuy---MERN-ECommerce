@@ -5,6 +5,8 @@ import { useSellerProfileContext } from '../../../hooks/useSellerProfileContext'
 
 // blockchain 
 import {generateBlockChainID} from "../../../bloackChain/generateBlockchainId"
+import {useQRcodeGeneration} from "../../../bloackChain/useQRcodeGeneration"
+
 
 import "./SellerProductItem.scss"
 
@@ -12,6 +14,9 @@ const SellerProductItem = ({product, business}) => {
   const {user} = useAuthContext()
   const {dispatch} = useSellerProductContext()
   const {dispatch:dispatchSellerProfile} = useSellerProfileContext()
+
+  // qr code generator
+  const {generateQR} = useQRcodeGeneration()
 
 
   const [isEditing, setIsEditing] = useState(false)
@@ -79,14 +84,17 @@ const SellerProductItem = ({product, business}) => {
     }
   }
 
-
+  
   const requestToAdd = async(e) => {
 
     if(business.productsPublished < business.package){
 
         // generate unique key 
         const blockChainId = generateBlockChainID(product._id, business._id)
+        // generateQR code
+        await generateQR(blockChainId, product);
 
+          
 
         // update the items published - business Registraion details
         const formData = new FormData()
@@ -110,6 +118,7 @@ const SellerProductItem = ({product, business}) => {
         const formData2 = new FormData()
         formData2.append('requestedToAddToBlockChain', true)
         formData2.append('blockChainId', blockChainId)
+        
 
         const response2 = await fetch("/api/users/seller/updateProduct/" + product._id,{
           method:"PATCH",
@@ -145,6 +154,10 @@ const SellerProductItem = ({product, business}) => {
                 <span>NOT YET</span>
               }
             </p>
+            {product.QRcode && 
+              <img src={product.QRcode} alt="" className='img-fluid'/>
+            }
+            
             <div className="buttons">
               <div className="row">
                 <div className="col-6" style={{display:"flex", justifyContent:"center"}}>

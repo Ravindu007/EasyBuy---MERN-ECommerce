@@ -13,7 +13,8 @@ const productSchema = new Schema({
   productImage2:{type:String, required:true},
   productImage3:{type:String, required:true},
   requestedToAddToBlockChain:{type:Boolean, required:true},
-  blockChainId:{type:String, required:true}
+  blockChainId:{type:String, required:true},
+  QRcode:{type:String, required:true}
 },{timestamps:true})
 
 module.exports = mongoose.model('product', productSchema)
