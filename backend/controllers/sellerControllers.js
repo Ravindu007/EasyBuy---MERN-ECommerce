@@ -20,7 +20,7 @@ const getBusinessRegistrationDetails = async(req,res) => {
 
 // create business registration
 const createBusinessRegistrationDetails = async(req,res) => {
-  const {businessName, businessType,businessOwner,userEmail, businessRegistrationDate,approvalByAdmin, adminComment,package} = req.body 
+  const {businessName, businessType,businessOwner,userEmail, businessRegistrationDate,approvalByAdmin, adminComment,package, productsPublished} = req.body 
 
   try{
     let fileUrl = null 
@@ -34,7 +34,7 @@ const createBusinessRegistrationDetails = async(req,res) => {
 
       fileUrl = `https://storage.googleapis.com/${bucket.name}/${file.name}`;
       
-      const businessRegistration = await businessRegistrationModel.create({businessName, businessType,businessOwner,userEmail, businessRegistrationDate,approvalByAdmin, adminComment,package, businessLegalDocument:fileUrl})
+      const businessRegistration = await businessRegistrationModel.create({businessName, businessType,businessOwner,userEmail, businessRegistrationDate,approvalByAdmin, adminComment,package,productsPublished, businessLegalDocument:fileUrl})
 
       res.status(200).json(businessRegistration)
     }
@@ -54,6 +54,8 @@ const updateBusinessRegistrationDetails = async(req,res) => {
     existingDetails.approvalByAdmin = req.body.approvalByAdmin || existingDetails.approvalByAdmin
     existingDetails.adminComment = req.body.adminComment || existingDetails.adminComment
     existingDetails.package = req.body.package || existingDetails.package
+    existingDetails.productsPublished = req.body.productsPublished || existingDetails.productsPublished
+
 
     let fileUrl = null
 
@@ -64,7 +66,7 @@ const updateBusinessRegistrationDetails = async(req,res) => {
 
       await file.save(buffer, {contentType:"application/pdf"})
 
-      fileUrl = `https://storage.googleapis.com/${bucket.name}/${filename}`
+      fileUrl = `https://storage.googleapis.com/${bucket.name}/${file.name}`
 
       existingDetails.businessLegalDocument = fileUrl
 
@@ -113,7 +115,7 @@ const getAllSellerProducts = async(req,res)=>{
 
 // create product
 const createSellerProduct = async(req,res) => {
-  const {productName,businessId, userEmail, productCategory, numberOfItems} = req.body
+  const {productName,businessId, userEmail, productCategory, numberOfItems,requestedToAddToBlockChain} = req.body
 
   try{
     const files = req.files;
@@ -151,7 +153,7 @@ const createSellerProduct = async(req,res) => {
           if (numUploaded === fileArray.length) {
             try {
               const product = await productModel.create({
-                productName, userEmail,businessId, productCategory, numberOfItems,
+                productName, userEmail,businessId, productCategory, numberOfItems,requestedToAddToBlockChain,
                 productImage1: imageUrls[0],
                 productImage2: imageUrls[1],
                 productImage3: imageUrls[2]
@@ -178,12 +180,16 @@ const createSellerProduct = async(req,res) => {
 const updateSellerProduct = async (req, res) => {
   const { id } = req.params;
 
-  const { numberOfItems } = req.body;
+  const { numberOfItems, requestedToAddToBlockChain } = req.body;
 
   const updateObj = {};
 
   if (numberOfItems) {
     updateObj.numberOfItems = numberOfItems;
+  }
+
+  if(requestedToAddToBlockChain){
+    updateObj.requestedToAddToBlockChain = requestedToAddToBlockChain;
   }
 
 

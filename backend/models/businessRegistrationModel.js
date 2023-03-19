@@ -11,7 +11,8 @@ const businessRegistrationSchema = new Schema({
   businessLegalDocument:{type:String, required:true},
   approvalByAdmin:{type:Boolean, required:true},
   adminComment:{type:String, required:true},
-  package:{type:String, required:true}
+  package:{type:Number, required:true},
+  productsPublished:{type:Number, required:true}
 },{timestamps:true})
 
 module.exports = mongoose.model('business', businessRegistrationSchema)

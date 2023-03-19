@@ -51,7 +51,7 @@ const SellerProfile = () => {
       fetchProfile()
       fetchAllProducts()
     }
-  },[])
+  },[singleProfile])
 
   const [showRegistrationForm, setShowRegistrationForm] = useState(false)
 
@@ -83,7 +83,7 @@ const SellerProfile = () => {
                 <>
                 <p>Products</p>
                   {sellerProducts && sellerProducts.map((sellerProduct)=>(
-                    <SellerProductItem key={sellerProduct._id} product={sellerProduct}/>
+                    <SellerProductItem key={sellerProduct._id} product={sellerProduct} business={singleProfile}/>
                   ))}
                 </>
               )}

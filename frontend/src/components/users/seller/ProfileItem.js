@@ -108,6 +108,11 @@ const ProfileItem = ({profile, parentComponent}) => {
               <p><strong>Admin Approval: </strong>{profile.approvalByAdmin === true ? <span>APPROVED</span> : <span>NOT APPROVED</span>}</p>
               <p><strong>Admin Comment: </strong>{profile.adminComment}</p>
               <p><strong>Package: </strong>{profile.package} items</p>
+              {profile.approvalByAdmin === true ?
+                <p><strong>Number of items published: </strong>{profile.productsPublished}/{profile.package}</p> 
+                :
+                null
+              }
           </div>
           {parentComponent === "/seller/ViewProfile" && (
             <div className="col-4">

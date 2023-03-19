@@ -17,6 +17,7 @@ const BusinessRegistrationForm = () => {
   const [approvalByAdmin, setApprovalByAdmin] = useState(false)
   const [adminComment, setAdminComment] = useState("")
   const [selectedPackage, setSelectedPackage] = useState(3)
+  const [productsPublished, setProductsPublished] = useState(0)
 
   const handleSubmit = async(e) => {
     e.preventDefault()
@@ -31,6 +32,7 @@ const BusinessRegistrationForm = () => {
     formData.append('approvalByAdmin',approvalByAdmin)
     formData.append('adminComment', "No Comment")
     formData.append('package',selectedPackage)
+    formData.append('productsPublished', productsPublished)
 
     const response = await fetch("/api/users/seller/createRegistrationDetails", {
       method:"POST",

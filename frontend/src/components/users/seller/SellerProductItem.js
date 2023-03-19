@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
 import { useAuthContext } from '../../../hooks/authHooks/useAuthContext'
 import { useSellerProductContext } from '../../../hooks/useSellerProductContext'
+import { useSellerProfileContext } from '../../../hooks/useSellerProfileContext'
 
 import "./SellerProductItem.scss"
 
-const SellerProductItem = ({product}) => {
+const SellerProductItem = ({product, business}) => {
   const {user} = useAuthContext()
   const {dispatch} = useSellerProductContext()
+  const {dispatch:dispatchSellerProfile} = useSellerProfileContext()
+
 
   const [isEditing, setIsEditing] = useState(false)
 
@@ -54,8 +57,69 @@ const SellerProductItem = ({product}) => {
     if(response.ok){
       dispatch({type:"DELETE_PRODUCT", payload:json})
     }
+
+    // update the items published
+    const formData2 = new FormData()
+    formData2.append('productsPublished', business.productsPublished-1)
+
+    const response2 = await fetch("/api/users/seller/updateRegistrationDetails/" + business._id,{
+      method:"PATCH",
+      body:formData2,
+      headers:{
+        'Authorization':`${user.email} ${user.token}`
+      }
+    })
+
+    const json2 = await response2.json()
+    if(response.ok){
+      dispatchSellerProfile({type:"UPDATE_SINGLE_PROFILE", payload:json2})
+    }
   }
 
+
+  const requestToAdd = async(e) => {
+
+    if(business.productsPublished < business.package){
+        // update the items published
+        const formData = new FormData()
+        formData.append('productsPublished', business.productsPublished+1)
+
+        const response = await fetch("/api/users/seller/updateRegistrationDetails/" + business._id,{
+          method:"PATCH",
+          body:formData,
+          headers:{
+            'Authorization':`${user.email} ${user.token}`
+          }
+        })
+
+        const json = await response.json()
+        if(response.ok){
+          dispatchSellerProfile({type:"UPDATE_SINGLE_PROFILE", payload:json})
+        }
+
+
+        // patch request to product 
+        const formData2 = new FormData()
+        formData2.append('requestedToAddToBlockChain', true)
+
+        const response2 = await fetch("/api/users/seller/updateProduct/" + product._id,{
+          method:"PATCH",
+          body:formData2,
+          headers:{
+            'Authorization':`${user.email} ${user.token}`
+          }
+        })  
+
+        const json2 = await response2.json()
+        if(response2.ok){
+          dispatch({type:"UPDATE_PRODUCT", payload:json2})
+        }
+    }else{
+      alert("Exceeding limit")
+    }
+
+    e.preventDefault()
+  }
  
   return (
     <div className="sellerProductItem">
@@ -65,7 +129,13 @@ const SellerProductItem = ({product}) => {
             <p><strong>Product Name: </strong>{product.productName}</p>
             <p><strong>Product Category: </strong>{product.productCategory}</p>
             <p><strong>Number of items : </strong>{product.numberOfItems}</p>
-              
+            <p><strong>Requested: </strong>
+              {product.requestedToAddToBlockChain === true ? 
+                <span>REQUESTED</span> 
+                  : 
+                <span>NOT YET</span>
+              }
+            </p>
             <div className="buttons">
               <div className="row">
                 <div className="col-6" style={{display:"flex", justifyContent:"center"}}>
@@ -92,11 +162,14 @@ const SellerProductItem = ({product}) => {
               </div>
               <div className="row mt-2">
                 <div className="col-12" style={{display:"flex", justifyContent:"center"}}>
-                  <button 
-                    className='btn btn-outline-warning'
-                  >
-                    REQUEST
-                  </button>
+                  {product.requestedToAddToBlockChain !== true && (
+                    <button 
+                      className='btn btn-outline-warning'
+                      onClick={requestToAdd}
+                    >
+                      REQUEST
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

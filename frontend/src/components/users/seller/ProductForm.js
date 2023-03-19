@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { useAuthContext } from '../../../hooks/authHooks/useAuthContext'
 import { useSellerProductContext } from '../../../hooks/useSellerProductContext'
+import {useSellerProfileContext} from "../../../hooks/useSellerProfileContext"
 
 const ProductForm = ({business}) => {
   const {user} = useAuthContext()
   const {dispatch} = useSellerProductContext()
+  const {dispatch:dispatchSellerProfile} = useSellerProfileContext()
 
   // input fields 
   const [productName, setProductName] = useState("")
@@ -26,6 +28,7 @@ const ProductForm = ({business}) => {
     formData.append('productImage1', productImage1)
     formData.append('productImage2', productImage2)
     formData.append('productImage3',productImage3)
+    formData.append('requestedToAddToBlockChain',false)
 
     const response = await fetch("/api/users/seller/createProduct",{
       method:"POST",
@@ -37,7 +40,14 @@ const ProductForm = ({business}) => {
     const json = await response.json()
     if(response.ok){
       dispatch({type:"CREATE_PRODUCT", payload:json})
+      setProductName("")
+      setProductCategory("")
+      setNumberOfItems("")
+      setProductImage1("")
+      setProductImage2("")
+      setProductImage3("")
     }
+
   }
 
 
