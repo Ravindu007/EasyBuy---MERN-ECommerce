@@ -161,7 +161,7 @@ const Home = () => {
                                   <div className="images" style={{display:"flex", padding:"50px"}}>
                                     <img src={singleProduct.productImage1} className='mx-auto d-block img-fluid' />
                                     <img src={singleProduct.productImage2} className='mx-auto d-block img-fluid' />
-                                    <img src={singleProduct.productImage2} className='mx-auto d-block img-fluid' />
+                                    <img src={singleProduct.productImage3} className='mx-auto d-block img-fluid' />
                                   </div>
                                 
                                 </div>
