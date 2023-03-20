@@ -22,25 +22,62 @@ const getBusinessRegistrationDetails = async(req,res) => {
 const createBusinessRegistrationDetails = async(req,res) => {
   const {businessName, businessType,businessOwner,userEmail, businessRegistrationDate,approvalByAdmin, adminComment,package, productsPublished} = req.body 
 
+
   try{
-    let fileUrl = null 
+    const files = req.files;
 
-    if(req.file){
-      const {originalname, buffer} = req.file 
+    if (!files || files.length < 2) {
+      res.status(400).send('Please upload 2 requested files');
+      return;
+    } else {
+      const fileUrls = [];
+      let numUploaded = 0;
 
-      const file = bucket.file(`registrations/${originalname}`)
+      const fileArray = Object.values(files);
 
-      await file.save(buffer, {contentType:"application/pdf"})
+      for (let i = 0; i < fileArray.length; i++) {
+        const file = fileArray[i][0];
+        const fileName = file.originalname;
+        const fileRef = bucket.file(fileName);
+        
+        const stream = fileRef.createWriteStream({
+          metadata: {
+            contentType: file.mimetype
+          }
+        });
+   
+        stream.on("error", (err) => {
+          console.log(err);
+          res.status(500).json({ error: 'An error occurred while uploading the images.' });
+        });
 
-      fileUrl = `https://storage.googleapis.com/${bucket.name}/${file.name}`;
-      
-      const businessRegistration = await businessRegistrationModel.create({businessName, businessType,businessOwner,userEmail, businessRegistrationDate,approvalByAdmin, adminComment,package,productsPublished, businessLegalDocument:fileUrl})
+        stream.on("finish", async () => {
+          const url = `https://storage.googleapis.com/${bucket.name}/${fileName}`
+          fileUrls.push(url);
+          numUploaded++;
 
-      res.status(200).json(businessRegistration)
+          if (numUploaded === fileArray.length) {
+            try {
+              const business = await businessRegistrationModel.create({
+                businessName, businessType,businessOwner,userEmail, businessRegistrationDate,approvalByAdmin, adminComment,package, productsPublished,
+                businessLogo: fileUrls[0],
+                businessLegalDocument: fileUrls[1]
+              });
+
+              res.status(200).json(business);
+            } catch (error) {
+              console.log(error);
+              res.status(500).json({ error: 'An error occurred while creating the product.' });
+            }
+          }
+        });
+
+        stream.end(file.buffer);
+      }
     }
   }catch(error){
     res.status(400).json(error)
-  }
+  }  
 }
 
 const updateBusinessRegistrationDetails = async(req,res) => {

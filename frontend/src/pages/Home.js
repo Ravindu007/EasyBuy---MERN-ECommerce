@@ -66,12 +66,6 @@ const Home = () => {
   }
 
 
-  // click on view more button
-  const [viewDescription, setViewDiscription] = useState(false)
-
-  const showDescription = () => {
-    setViewDiscription(!viewDescription)
-  }
 
   /** ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////**/
 
@@ -146,14 +140,45 @@ const Home = () => {
               {singleProduct && !noMatchFound && (
                 <>
                   <p><strong>AUTHENTIC</strong></p>
-                  <button onClick={showDescription}>View more</button>
-                  {viewDescription && (
-                    <>
-                      <p><strong>Product Name: </strong>{singleProduct.productName}</p>
-                      <p><strong>Business Email: </strong>{singleProduct.userEmail}</p>
-                      <p><strong>Product Category: </strong>{singleProduct.productCategory}</p>
-                    </>
-                  )}
+                  <button data-toggle="modal" data-target="#viewMore">View more</button>
+                  <div className="modal" tabIndex={-1} role="dialog" id='viewMore'>
+                    <div className="modal-dialog" role='documnet'>
+                      <div className="modal-content">
+                        <div className="modal-body">
+                        <>
+                          <p><strong>Product Name: </strong>{singleProduct.productName}</p>
+                          <p><strong>Business Email: </strong>{singleProduct.userEmail}</p>
+                          <p><strong>Product Category: </strong>{singleProduct.productCategory}</p>
+                          <p>Product images</p>
+                          <button data-toggle="modal" data-target="#productImages">See Images</button>
+
+                          {/* image model */}
+                          <div className="modal" tabIndex={-1} role="dialog" id="productImages">
+                            <div className="modal-dialog modal-dialog-centerd modal-lg" role="document">
+                              <div className="modal-content">
+                                <div className="modal-body">
+                                
+                                  <div className="images" style={{display:"flex", padding:"50px"}}>
+                                    <img src={singleProduct.productImage1} className='mx-auto d-block img-fluid' />
+                                    <img src={singleProduct.productImage2} className='mx-auto d-block img-fluid' />
+                                    <img src={singleProduct.productImage2} className='mx-auto d-block img-fluid' />
+                                  </div>
+                                
+                                </div>
+                                <div className="modal-footer">
+                                  <button data-dismiss="modal">close</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                        </div>
+                        <div className="modal-footer">
+                          <button data-dismiss="modal">close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </>
               )}
             </div>

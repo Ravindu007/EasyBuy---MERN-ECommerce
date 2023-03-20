@@ -37,7 +37,10 @@ router.use(requireAuth)
 // get gegistration details by email
 router.get("/getAllRegistrationDetails", getBusinessRegistrationDetails)
 
-router.post("/createRegistrationDetails", uploadRegistration.single('businessLegalDocument'), createBusinessRegistrationDetails)
+router.post("/createRegistrationDetails", uploadRegistration.fields([
+  { name: 'businessLogo' },
+  { name: 'businessLegalDocument' }
+]), createBusinessRegistrationDetails)
 
 router.patch("/updateRegistrationDetails/:id", uploadRegistration.single('businessLegalDocument'),updateBusinessRegistrationDetails)
 

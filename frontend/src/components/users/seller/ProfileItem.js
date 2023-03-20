@@ -104,6 +104,9 @@ const ProfileItem = ({profile, parentComponent}) => {
               <p><strong>Business Type: </strong>{profile.businessType}</p>
               <p><strong>Business Owner: </strong>{profile.businessOwner}</p>
               <p><strong>Business Registration Date: </strong>{profile.businessRegistrationDate}</p>
+              <div className="logo">
+                <img src={profile.businessLogo} className='img-fluid' />
+              </div>
               <a href={profile.businessLegalDocument} target="_blank">VIEW DOCUMENTS</a>
               <p><strong>Admin Approval: </strong>{profile.approvalByAdmin === true ? <span>APPROVED</span> : <span>NOT APPROVED</span>}</p>
               <p><strong>Admin Comment: </strong>{profile.adminComment}</p>

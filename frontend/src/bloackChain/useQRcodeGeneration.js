@@ -54,4 +54,3 @@ export const useQRcodeGeneration = () => {
 
 export default useQRcodeGeneration
 
-

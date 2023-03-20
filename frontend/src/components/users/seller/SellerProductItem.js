@@ -92,7 +92,7 @@ const SellerProductItem = ({product, business}) => {
         // generate unique key 
         const blockChainId = generateBlockChainID(product._id, business._id)
         // generateQR code
-        await generateQR(blockChainId, product);
+        await generateQR(blockChainId, product, business);
 
           
 

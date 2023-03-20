@@ -13,6 +13,7 @@ const BusinessRegistrationForm = () => {
   const [businessOwner, setBusinessOwner] = useState("")
   const [userEmail, setUserEmail] = useState(user.email)
   const [businessRegistrationDate, setBusinessRegistrationDate] = useState("")
+  const [businessLogo, setBusinessLogo] = useState(null)
   const [businessLegalDocument, setBusinessLegalDocument] = useState(null)
   const [approvalByAdmin, setApprovalByAdmin] = useState(false)
   const [adminComment, setAdminComment] = useState("")
@@ -28,6 +29,7 @@ const BusinessRegistrationForm = () => {
     formData.append('businessOwner',businessOwner)
     formData.append('userEmail',userEmail)
     formData.append('businessRegistrationDate', businessRegistrationDate)
+    formData.append('businessLogo',businessLogo)
     formData.append('businessLegalDocument', businessLegalDocument)
     formData.append('approvalByAdmin',approvalByAdmin)
     formData.append('adminComment', "No Comment")
@@ -84,6 +86,15 @@ const BusinessRegistrationForm = () => {
             className='form-control' 
             onChange={e=>setBusinessRegistrationDate(e.target.value)}
             value={businessRegistrationDate}
+          />
+        </div>
+        <div className="form-group">
+          <label>Business Logo</label>
+          <input 
+            type="file"
+            className='form-control' 
+            onChange={e=>setBusinessLogo(e.target.files[0])}
+            name='businessLogo'
           />
         </div>
         <div className="form-group">

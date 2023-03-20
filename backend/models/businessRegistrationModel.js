@@ -8,6 +8,7 @@ const businessRegistrationSchema = new Schema({
   businessOwner:{type:String, required:true},
   userEmail:{type:String, required:true},
   businessRegistrationDate:{type:String, required:true},
+  businessLogo:{type:String, required:true},
   businessLegalDocument:{type:String, required:true},
   approvalByAdmin:{type:Boolean, required:true},
   adminComment:{type:String, required:true},
