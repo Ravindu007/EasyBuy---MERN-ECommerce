@@ -35,7 +35,25 @@ const ReportForm = () => {
 
   // submit a report including above details and businessId
   const submitReport = async(e) => {
+    e.preventDefault()
 
+    const formData = new FormData()
+    formData.append('businessId', businessId)
+    formData.append('businessName', businessName)
+    formData.append('productName',productName)
+    formData.append('dateOfPurchase', dateOfPurchase)
+    formData.append('fakeProductImage1', fakeProductImage1)
+    formData.append('fakeProductImage2', fakeProductImage2)
+
+    const response = await fetch("/api/users/consumer/createReport",{
+      method:"POST",
+      body:formData
+    })
+
+    const json = await response.json()
+    if(response.ok){
+      console.log(json);
+    }
   }
 
   return (

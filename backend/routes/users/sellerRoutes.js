@@ -8,7 +8,7 @@ const {
 
   getBusinessRegistrationDetails, createBusinessRegistrationDetails, updateBusinessRegistrationDetails, deleteBusinessRegistrationDetails, 
 
-
+  getAllRelatedReportsRelatedToBusiness
 } = require("../../controllers/sellerControllers")
 
 // middleware
@@ -71,5 +71,11 @@ router.patch("/updateProduct/:id", uploadProduct.fields([
 
 
 router.delete("/deleteProduct/:id", deleteProduct)
+
+
+
+
+// get all related reports
+router.get("/getAllRelatedReports" , getAllRelatedReportsRelatedToBusiness)
 
 module.exports = router

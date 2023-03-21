@@ -1,5 +1,6 @@
 const businessRegistrationModel = require("../models/businessRegistrationModel")
 const productModel = require("../models/productModel")
+const reportModal = require("../models/reportModal")
 
 const {admin}  = require("../server")
 const bucket  = admin.storage().bucket(process.env.BUCKET)
@@ -403,10 +404,26 @@ const deleteProduct = async(req,res) => {
   }
 }
 
+
+
+
+// getting all the reports related to the business
+const getAllRelatedReportsRelatedToBusiness = async(req,res) => {
+
+  const businessId = req.query.businessId
+  try{
+    const allReports = await reportModal.find({businessId:businessId})
+    res.status(200).json(allReports)
+  }catch(error){
+    res.status(400).json(error)
+  }
+}
+
 module.exports = {
   getAllSellerProducts, createSellerProduct,updateSellerProduct,updateSellerProductQRCode,deleteProduct,
   
   getBusinessRegistrationDetails, createBusinessRegistrationDetails, updateBusinessRegistrationDetails, deleteBusinessRegistrationDetails,
   
+  getAllRelatedReportsRelatedToBusiness
 
 }
