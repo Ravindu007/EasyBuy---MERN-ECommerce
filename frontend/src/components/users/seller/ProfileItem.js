@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import {Link} from "react-router-dom"
 import { useAuthContext } from '../../../hooks/authHooks/useAuthContext'
 import { useSellerProfileContext } from '../../../hooks/useSellerProfileContext'
 
@@ -107,7 +108,7 @@ const ProfileItem = ({profile, parentComponent}) => {
               <div className="logo">
                 <img src={profile.businessLogo} className='img-fluid' />
               </div>
-              <a href={profile.businessLegalDocument} target="_blank">VIEW DOCUMENTS</a>
+              <strong>Legal Documents: </strong><a href={profile.businessLegalDocument} target="_blank">VIEW DOCUMENTS</a>
               <p><strong>Admin Approval: </strong>{profile.approvalByAdmin === true ? <span>APPROVED</span> : <span>NOT APPROVED</span>}</p>
               <p><strong>Admin Comment: </strong>{profile.adminComment}</p>
               <p><strong>Package: </strong>{profile.package} items</p>
@@ -119,16 +120,25 @@ const ProfileItem = ({profile, parentComponent}) => {
           </div>
           {parentComponent === "/seller/ViewProfile" && (
             <div className="col-4">
-              <button 
-                className='btn btn-outline-success'
-                onClick={()=>{
-                  setDraftBusinessLegalDocument(profile.businessLegalDocument)
-                  setDraftPackage(profile.package)
-                  setIsEditing(true)
-                }}
-              >
-                UPDATE
-              </button>
+              <div className="buttons" style={{display:"flex", flexDirection:"column"}}>
+                  <button 
+                    className='btn btn-outline-success'
+                    onClick={()=>{
+                      setDraftBusinessLegalDocument(profile.businessLegalDocument)
+                      setDraftPackage(profile.package)
+                      setIsEditing(true)
+                    }}
+                  >
+                    UPDATE
+                  </button>
+                  <Link to={`/seller/ViewProfile/reportView?businessId=${profile._id}`}>
+                  <button
+                    className='btn btn-outline-danger mt-5'
+                    >
+                      Access Reports
+                  </button>
+                  </Link>
+              </div>
             </div>
           )}
           {parentComponent === "/admin/sellerManagement" && (

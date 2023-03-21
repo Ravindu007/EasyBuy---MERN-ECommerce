@@ -6,6 +6,7 @@ const productSchema = new Schema({
   // id will be auto added 
   productName:{type:String, required:true},
   businessId:{type:String, required:true},
+  businessName:{type:String, required:true},
   userEmail:{type:String, required:true},
   productCategory:{type:String, required:true},
   numberOfItems:{type:Number, required:true},

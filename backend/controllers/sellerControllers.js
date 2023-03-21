@@ -152,7 +152,7 @@ const getAllSellerProducts = async(req,res)=>{
 
 // create product
 const createSellerProduct = async(req,res) => {
-  const {productName,businessId, userEmail, productCategory, numberOfItems,requestedToAddToBlockChain, blockChainId, QRcode} = req.body
+  const {productName,businessId,businessName, userEmail, productCategory, numberOfItems,requestedToAddToBlockChain, blockChainId, QRcode} = req.body
 
   try{
     const files = req.files;
@@ -190,7 +190,7 @@ const createSellerProduct = async(req,res) => {
           if (numUploaded === fileArray.length) {
             try {
               const product = await productModel.create({
-                productName, userEmail,businessId, productCategory, numberOfItems,requestedToAddToBlockChain,blockChainId,QRcode,
+                productName, userEmail,businessId,businessName, productCategory, numberOfItems,requestedToAddToBlockChain,blockChainId,QRcode,
                 productImage1: imageUrls[0],
                 productImage2: imageUrls[1],
                 productImage3: imageUrls[2]

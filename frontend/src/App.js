@@ -7,6 +7,7 @@ import Signup from "./pages/userForms/Signup";
 import Login from "./pages/userForms/Login"
 import { useAuthContext } from "./hooks/authHooks/useAuthContext";
 import SellerProfile from "./pages/seller/SellerProfile";
+import ReportView from "./components/users/seller/ReportView";
 
 function App() {
   const {user} = useAuthContext()
@@ -41,6 +42,7 @@ function App() {
 
             {/* Routes for sellers */}
             <Route path="/seller/ViewProfile" element={user ? <SellerProfile/> : <Navigate to="/login"/>}/>
+            <Route path="/seller/ViewProfile/reportView" element={user ? <ReportView/> : <Navigate to="/login"/>}/>
           </Routes>
         </div>
       </BrowserRouter>

@@ -6,6 +6,7 @@ const AuthenticProductItem = ({product}) => {
       <div className="row">
         <div className="col-4">
           <p><strong>Product Name: </strong>{product.productName}</p>
+          <p><strong>Business Name: </strong>{product.businessName}</p>
           <p><strong>Business Email: </strong>{product.userEmail}</p>
           <p><strong>Product Category: </strong>{product.productCategory}</p>
         </div>

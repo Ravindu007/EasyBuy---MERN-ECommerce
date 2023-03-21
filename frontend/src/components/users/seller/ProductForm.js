@@ -24,6 +24,7 @@ const ProductForm = ({business}) => {
     formData.append('productName', productName)
     formData.append('userEmail',user.email)
     formData.append('businessId', business._id)
+    formData.append('businessName',business.businessName)
     formData.append('productCategory', productCategory)
     formData.append('numberOfItems',numberOfItems)
     formData.append('productImage1', productImage1)

@@ -3,13 +3,14 @@ import QrScanner from 'qr-scanner';
 import {useSellerProductContext} from "../hooks/useSellerProductContext"
 import AuthenticProductItem from '../components/users/consumer/AuthenticProductItem';
 import { useAuthenticProductContext } from '../hooks/useAuthenticProductContext';
+import ReportForm from '../components/users/consumer/ReportForm';
 
 
  
 const Home = () => {
 
 
-  /** ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////**/
+  //QRCODE** ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////**/
   const [isLoadingDetails, setIsLoadingDetails] = useState(true)
 
   const {sellerProducts:singleProduct, dispatch} = useSellerProductContext()
@@ -67,7 +68,7 @@ const Home = () => {
 
 
 
-  /** ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////**/
+  //FETCHING AUTHENTICS** /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////**/
 
   const {authenticProducts, dispatch:dispatchAuthentics} = useAuthenticProductContext()
 
@@ -134,7 +135,24 @@ const Home = () => {
               {noMatchFound && (
                 <>
                 <p>No match found in Our block chain</p>
-                <button>Report</button>
+                <button data-toggle="modal" data-target="#report">Report</button>
+
+                {/* report-modal */}
+                <div className="modal" tabIndex={-1} role="dialog" id="report">
+                  <div className="modal-dialog modal-dialog-centerd modal-lg" role="document">
+                      <div className="modal-content">
+                          <div className="modal-body">
+                             {/* Report component */}
+                             <ReportForm/>
+                          </div>
+                          <div className="modal-footer">
+                              <button data-dismiss="modal">close</button>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                
+
                 </>
               )}
               {singleProduct && !noMatchFound && (
@@ -147,6 +165,7 @@ const Home = () => {
                         <div className="modal-body">
                         <>
                           <p><strong>Product Name: </strong>{singleProduct.productName}</p>
+                          <p><strong>Business Name: </strong>{singleProduct.businessName}</p>
                           <p><strong>Business Email: </strong>{singleProduct.userEmail}</p>
                           <p><strong>Product Category: </strong>{singleProduct.productCategory}</p>
                           <p>Product images</p>
