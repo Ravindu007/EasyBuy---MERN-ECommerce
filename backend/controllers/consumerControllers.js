@@ -1,3 +1,4 @@
+const businessRegistrationModel = require("../models/businessRegistrationModel")
 const productModel = require("../models/productModel")
 
 const getScanDetails = async(req, res) => {
@@ -21,4 +22,17 @@ const getAllAuthenticatedProducts = async(req,res)=>{
 }
 
 
-module.exports = {getScanDetails,getAllAuthenticatedProducts}
+
+// for reporting feature get all the business Details
+const getAllBusinessRegistrationDetails = async(req,res) => {
+  try {
+    const allRegistrations = await businessRegistrationModel.find({}).select('businessName').sort({createdAt:-1})
+    res.status(200).json(allRegistrations)
+  } catch (error) {
+    res.status(400).json(error)
+  }
+}
+
+
+
+module.exports = {getScanDetails,getAllAuthenticatedProducts,getAllBusinessRegistrationDetails}
