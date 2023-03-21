@@ -7,7 +7,7 @@ import Signup from "./pages/userForms/Signup";
 import Login from "./pages/userForms/Login"
 import { useAuthContext } from "./hooks/authHooks/useAuthContext";
 import SellerProfile from "./pages/seller/SellerProfile";
-import ReportView from "./components/users/seller/ReportView";
+import ReportView from "./pages/seller/ReportView";
 
 function App() {
   const {user} = useAuthContext()

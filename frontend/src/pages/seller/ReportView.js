@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
-import { useAuthContext } from '../../../hooks/authHooks/useAuthContext'
+import { useLocation } from 'react-router-dom'
+import ReportItem from '../../components/users/seller/ReportItem'
+import { useAuthContext } from '../../hooks/authHooks/useAuthContext'
+import {useReportContext} from "../../hooks/useReportContext"
 
 const ReportView = () => {
   const {user} = useAuthContext()
+  const {reports, dispatch} = useReportContext()
 
   const location = useLocation()
   const businessId = new URLSearchParams(location.search).get('businessId')
@@ -18,7 +21,7 @@ const ReportView = () => {
       })
       const json = await response.json()
       if(response.ok){
-        console.log(json);
+        dispatch({type:"GET_ALL_REPORTS", payload:json})
       }
     }
 
@@ -30,7 +33,9 @@ const ReportView = () => {
 
   return (
     <div className='reportView'>
-      <p>{businessId}</p>
+      {reports && reports.map((report)=>(
+        <ReportItem key={report._id} report={report}/>
+      ))}
     </div>
   )
 }

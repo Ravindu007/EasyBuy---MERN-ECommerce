@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { useReportContext } from '../../../hooks/useReportContext'
 
 const ReportForm = () => {
 
-  
+  const {dispatch} = useReportContext()
 
   // fetch all the registerd brands / business => for select options
   const [businessList, setBusinessList] = useState([])
@@ -52,7 +53,7 @@ const ReportForm = () => {
 
     const json = await response.json()
     if(response.ok){
-      console.log(json);
+      dispatch({type:"CREATE_REPORT", payload:json})
     }
   }
 

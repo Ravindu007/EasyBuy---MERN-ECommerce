@@ -89,7 +89,7 @@ const SellerProductItem = ({product, business}) => {
 
     if(business.productsPublished < business.package){
 
-        // generate unique key 
+        // generate unique key (block chain simulation) 
         const blockChainId = generateBlockChainID(product._id, business._id)
         // generateQR code
         await generateQR(blockChainId, product, business);
