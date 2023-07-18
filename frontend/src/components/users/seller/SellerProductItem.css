@@ -1,0 +1,10 @@
+.edit-images .image-item img {
+  width: 500px;
+  height: 230px;
+}
+.edit-images .image-item .form-group {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}/*# sourceMappingURL=SellerProductItem.css.map */

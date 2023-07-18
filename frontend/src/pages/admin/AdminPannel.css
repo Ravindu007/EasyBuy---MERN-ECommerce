@@ -1,0 +1,13 @@
+.adminPannel {
+  display: flex;
+  justify-content: center;
+}
+.adminPannel .buttons {
+  position: absolute;
+  top: 40%;
+  border: 1px solid black;
+}
+.adminPannel .buttons button {
+  width: 350px;
+  height: 150px;
+}/*# sourceMappingURL=AdminPannel.css.map */
