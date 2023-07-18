@@ -34,7 +34,7 @@ const ProductForm = ({business}) => {
     formData.append('blockChainId',"NO ID YET")
     formData.append('QRcode', null)
 
-    const response = await fetch("https://travelog-backend.onrender.com/api/users/seller/createProduct",{
+    const response = await fetch("https://easyproof-backend.onrender.com/api/users/seller/createProduct",{
       method:"POST",
       body:formData,
       headers:{

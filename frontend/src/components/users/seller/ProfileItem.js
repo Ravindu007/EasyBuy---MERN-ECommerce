@@ -23,7 +23,7 @@ const ProfileItem = ({profile, parentComponent}) => {
     formData.append('approvalByAdmin',true)
     formData.append('adminComment','YOUR BUSINESS IS ELIGIBLE FOR BUSINESS')
 
-    const response = await fetch("https://travelog-backend.onrender.com/api/admin/registrationDetails/approval/" +    profile._id, {
+    const response = await fetch("https://easyproof-backend.onrender.com/api/admin/registrationDetails/approval/" +    profile._id, {
       method:"PATCH",
       body:formData,
       headers:{
@@ -48,7 +48,7 @@ const ProfileItem = ({profile, parentComponent}) => {
     formData.append('approvalByAdmin',false)
     formData.append('adminComment',adminComment)
 
-    const response = await fetch("https://travelog-backend.onrender.com/api/admin/registrationDetails/approval/" +    profile._id, {
+    const response = await fetch("https://easyproof-backend.onrender.com/api/admin/registrationDetails/approval/" +    profile._id, {
       method:"PATCH",
       body:formData,
       headers:{
@@ -81,7 +81,7 @@ const ProfileItem = ({profile, parentComponent}) => {
     formData.append('approvalByAdmin', false)
     formData.append('adminComment', "No Comment")
 
-    const response = await fetch("https://travelog-backend.onrender.com/api/users/seller/updateRegistrationDetails/" + profile._id,{
+    const response = await fetch("https://easyproof-backend.onrender.com/api/users/seller/updateRegistrationDetails/" + profile._id,{
       method:"PATCH",
       body:formData,
       headers:{

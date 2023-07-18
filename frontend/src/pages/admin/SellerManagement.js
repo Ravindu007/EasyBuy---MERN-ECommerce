@@ -13,7 +13,7 @@ const SellerManagement = () => {
 
   useEffect(()=>{
     const fetchAllRegistrations = async() => {
-      const response = await fetch("https://travelog-backend.onrender.com/api/admin/getAllRegistrationDetails",{
+      const response = await fetch("https://easyproof-backend.onrender.com/api/admin/getAllRegistrationDetails",{
         headers:{
           'Authorization':`${user.email} ${user.token}`
         }

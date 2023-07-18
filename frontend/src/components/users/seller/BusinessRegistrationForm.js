@@ -36,7 +36,7 @@ const BusinessRegistrationForm = () => {
     formData.append('package',selectedPackage)
     formData.append('productsPublished', productsPublished)
 
-    const response = await fetch("https://travelog-backend.onrender.com/api/users/seller/createRegistrationDetails", {
+    const response = await fetch("https://easyproof-backend.onrender.com/api/users/seller/createRegistrationDetails", {
       method:"POST",
       body:formData,
       headers:{
