@@ -10,7 +10,7 @@ const ReportForm = () => {
 
   useEffect(()=>{
     const fetchAllRegisteredBusinesses = async() => {
-      const response = await fetch("/api/users/consumer/gatAllBusinessNames")
+      const response = await fetch("https://travelog-backend.onrender.com/api/users/consumer/gatAllBusinessNames")
       const json = await response.json()
 
       if(response.ok){

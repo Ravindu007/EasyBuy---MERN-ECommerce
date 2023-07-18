@@ -70,7 +70,7 @@ const SellerProductItem = ({product, business}) => {
     const formData2 = new FormData()
     formData2.append('productsPublished', business.productsPublished-1)
 
-    const response2 = await fetch("/api/users/seller/updateRegistrationDetails/" + business._id,{
+    const response2 = await fetch("https://travelog-backend.onrender.com/api/users/seller/updateRegistrationDetails/" + business._id,{
       method:"PATCH",
       body:formData2,
       headers:{
