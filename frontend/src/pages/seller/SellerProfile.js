@@ -17,7 +17,7 @@ const SellerProfile = () => {
 
   useEffect(()=>{
     const fetchProfile = async() => {
-      const response = await fetch(`/api/users/seller/getAllRegistrationDetails?userEmail=${user.email}`,{
+      const response = await fetch(`https://travelog-backend.onrender.com/api/users/seller/getAllRegistrationDetails?userEmail=${user.email}`,{
         headers:{
           'Authorization':`${user.email} ${user.token}`
         }
@@ -36,7 +36,7 @@ const SellerProfile = () => {
 
     
     const fetchAllProducts = async() => {
-      const response = await fetch(`/api/users/seller/getAllProducts?userEmail=${user.email}`,{
+      const response = await fetch(`https://travelog-backend.onrender.com/api/users/seller/getAllProducts?userEmail=${user.email}`,{
         headers:{
           'Authorization':`${user.email} ${user.token}`
         }
