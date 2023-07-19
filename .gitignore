@@ -1,5 +1,2 @@
-/backend/.env
-/backend/node_modules
-/backend/serviceAccount.json
-/frontend/node_modules
-/frontend/.env
+node_modules
+.env
