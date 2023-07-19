@@ -11,7 +11,7 @@ export const useLogin = () => {
     setIsLoading(true)
     setError(null)
 
-    const response = await fetch("/api/authUsers/login",{
+    const response = await fetch("https://easyproof-backend.onrender.com/api/authUsers/login",{
       method:"POST",
       body:JSON.stringify({email, password}),
       headers:{
