@@ -49,7 +49,7 @@ export const useQRcodeGeneration = () => {
     const formData = new FormData();
     formData.append('QRcode', blob, `${blockChainId}.png`);
   
-    const response = await fetch("https://travelog-backend.onrender.com/api/users/seller/UpdateQR/details/" + product._id,{
+    const response = await fetch("/api/users/seller/UpdateQR/details/" + product._id,{
       method:"PATCH",
       body:formData,
       headers:{

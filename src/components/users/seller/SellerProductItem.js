@@ -36,7 +36,7 @@ const SellerProductItem = ({product, business}) => {
     formData.append('productImage2', draftProductImage2)
     formData.append('productImage3', draftProductImage3)
 
-    const response = await fetch("https://easyproof-backend.onrender.com/api/users/seller/updateProduct/" + product._id,{
+    const response = await fetch("/api/users/seller/updateProduct/" + product._id,{
       method:"PATCH",
       body:formData,
       headers:{
@@ -55,7 +55,7 @@ const SellerProductItem = ({product, business}) => {
   const handleDelete = async(e)=> {
     e.preventDefault()
 
-    const response = await fetch("https://easyproof-backend.onrender.com/api/users/seller/deleteProduct/" + product._id,{
+    const response = await fetch("/api/users/seller/deleteProduct/" + product._id,{
       method:"DELETE",
       headers:{
         'Authorization':`${user.email} ${user.token}`
@@ -70,7 +70,7 @@ const SellerProductItem = ({product, business}) => {
     const formData2 = new FormData()
     formData2.append('productsPublished', business.productsPublished-1)
 
-    const response2 = await fetch("https://easyproof-backend.onrender.com/api/users/seller/updateRegistrationDetails/" + business._id,{
+    const response2 = await fetch("/api/users/seller/updateRegistrationDetails/" + business._id,{
       method:"PATCH",
       body:formData2,
       headers:{
@@ -100,7 +100,7 @@ const SellerProductItem = ({product, business}) => {
         const formData = new FormData()
         formData.append('productsPublished', business.productsPublished+1)
 
-        const response = await fetch("https://easyproof-backend.onrender.com/api/users/seller/updateRegistrationDetails/" + business._id,{
+        const response = await fetch("/api/users/seller/updateRegistrationDetails/" + business._id,{
           method:"PATCH",
           body:formData,
           headers:{
@@ -120,7 +120,7 @@ const SellerProductItem = ({product, business}) => {
         formData2.append('blockChainId', blockChainId)
         
 
-        const response2 = await fetch("https://easyproof-backend.onrender.com/api/users/seller/updateProduct/" + product._id,{
+        const response2 = await fetch("/api/users/seller/updateProduct/" + product._id,{
           method:"PATCH",
           body:formData2,
           headers:{

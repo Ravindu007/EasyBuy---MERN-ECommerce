@@ -48,7 +48,7 @@ const Home = () => {
 
   const checkAuthenticity = async(e) => {
   
-    const response = await fetch(`https://easyproof-backend.onrender.com/api/users/consumer/getScanDetails?result=${readQR}`)
+    const response = await fetch(`/api/users/consumer/getScanDetails?result=${readQR}`)
     const json = await response.json()
     if(response.ok){
       setIsLoadingDetails(false)
@@ -75,7 +75,7 @@ const Home = () => {
 
   useEffect(()=>{
     const fetchAllAuthentic = async() => {
-      const response = await fetch("https://easyproof-backend.onrender.com/api/users/consumer/getAllAuthenticatedProducts")
+      const response = await fetch("/api/users/consumer/getAllAuthenticatedProducts")
       const json = await response.json()
   
       if(response.ok){

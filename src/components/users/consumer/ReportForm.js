@@ -10,7 +10,7 @@ const ReportForm = () => {
 
   useEffect(()=>{
     const fetchAllRegisteredBusinesses = async() => {
-      const response = await fetch("https://travelog-backend.onrender.com/api/users/consumer/gatAllBusinessNames")
+      const response = await fetch("/api/users/consumer/gatAllBusinessNames")
       const json = await response.json()
 
       if(response.ok){
@@ -46,7 +46,7 @@ const ReportForm = () => {
     formData.append('fakeProductImage1', fakeProductImage1)
     formData.append('fakeProductImage2', fakeProductImage2)
 
-    const response = await fetch("https://easyproof-backend.onrender.com/api/users/consumer/createReport",{
+    const response = await fetch("/api/users/consumer/createReport",{
       method:"POST",
       body:formData
     })

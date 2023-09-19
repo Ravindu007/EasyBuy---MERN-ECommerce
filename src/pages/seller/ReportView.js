@@ -14,7 +14,7 @@ const ReportView = () => {
   // fetch reports related to a business
   useEffect(()=>{
     const fetchAllReportsRelatedToBusiness = async() => {
-      const response = await fetch(`https://easyproof-backend.onrender.com/api/users/seller/getAllRelatedReports?businessId=${businessId}`,{
+      const response = await fetch(`/api/users/seller/getAllRelatedReports?businessId=${businessId}`,{
         headers:{
           'Authorization':`${user.email} ${user.token}`
         }
