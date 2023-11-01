@@ -43,7 +43,6 @@ const Home = () => {
     qrScanner.start();
   }
   
-
   const [showAuthenticityButton, setShowAuthenticityButton] = useState(false)
 
   const checkAuthenticity = async(e) => {
@@ -72,7 +71,7 @@ const Home = () => {
 
   const {authenticProducts, dispatch:dispatchAuthentics} = useAuthenticProductContext()
 
-
+  // Iman, could you please check this code: this is where we are fetching authentic product data
   useEffect(()=>{
     const fetchAllAuthentic = async() => {
       const response = await fetch("/api/users/consumer/getAllAuthenticatedProducts")
