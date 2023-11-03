@@ -4,11 +4,11 @@ import {useSellerProductContext} from "../hooks/useSellerProductContext"
 import AuthenticProductItem from '../components/users/consumer/AuthenticProductItem';
 import { useAuthenticProductContext } from '../hooks/useAuthenticProductContext';
 import ReportForm from '../components/users/consumer/ReportForm';
+import { Modal, Button } from 'react-bootstrap';
 
 
  
 const Home = () => {
-
 
   //QRCODE** ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////**/
   const [isLoadingDetails, setIsLoadingDetails] = useState(true)
@@ -17,11 +17,7 @@ const Home = () => {
   const [noMatchFound, setNoMatchFound] = useState(false)
 
 
-  const [showCameraDevision, setShowCameraDevision] = useState(false)
-  const show = () => {
-    setShowCameraDevision(!showCameraDevision)
-    setIsLoadingDetails(true)
-  }
+
 
   const [readQR, setReadQR] = useState("")
 
@@ -42,8 +38,28 @@ const Home = () => {
 
     qrScanner.start();
   }
+
+  const [showModal, setShowModal] = useState(false);
+  const handleClose = () => setShowModal(false);
+  const handleShow = async() => {
+    await setShowModal(true)
+    await scanQR()
+  };
   
   const [showAuthenticityButton, setShowAuthenticityButton] = useState(false)
+
+  
+  // 2nd modal
+  const [showSecondModal, setShowSecondModal] = useState(false);
+
+  const handleResultModalCLose = () => setShowSecondModal(false);
+
+  const showResultModel = () => {
+    setShowSecondModal(true)
+    setShowModal(false)
+  };
+
+
 
   const checkAuthenticity = async(e) => {
   
@@ -52,13 +68,13 @@ const Home = () => {
     if(response.ok){
       setIsLoadingDetails(false)
       if(json === null){
-        setShowAuthenticityButton(false)
+        // setShowAuthenticityButton(false)
         setReadQR("")
         scanQR()
         setNoMatchFound(true);
       }else{
         dispatch({type:"GET_SINGLE_PRODUCT", payload:json})
-        setShowAuthenticityButton(false)
+        // setShowAuthenticityButton(false)
         setReadQR("")
         scanQR()
       }
@@ -95,108 +111,127 @@ const Home = () => {
       <div className="row">
 
         {/* banner part */}
-        <div className="col-12">
+        <div className="col-12 w-full border-2 border-blue-400">
           <div className="row">
-            <div className="col-12" style={{display:"flex", flexDirection:"column"}}>
+            <div className="col-12  flex flex-col items-center">
+
               <p>pop up camera</p>
               <button 
                 className='btn bg-red-400'
-                onClick={show}
+                onClick={handleShow}
               >
                 OPEN CAMERA
               </button>
-              {showCameraDevision && (
-                <>
-                <video id='cam'></video>
-                <button className='btn btn-warning' onClick={scanQR}>SCAN</button>
-                </>
-              )}
-            </div>
-            <div className="col-12">
-              <p>scanned details</p>
-              {readQR && (
-                  showAuthenticityButton && (
-                    <button 
-                    className=''
-                    onClick={checkAuthenticity}
-                    >
-                      CHECK AUTHENTICITY
-                  </button>
-                  )
-              )}
-            </div>
-            {isLoadingDetails ? null : ( 
-              <div className="col-12">
-              {noMatchFound && (
-                <>
-                <p>No match found in Our block chain</p>
-                <button data-toggle="modal" data-target="#report">Report</button>
-
-                {/* report-modal */}
-                <div className="modal" tabIndex={-1} role="dialog" id="report">
-                  <div className="modal-dialog modal-dialog-centerd modal-lg" role="document">
-                      <div className="modal-content">
-                          <div className="modal-body">
-                             {/* Report component */}
-                             <ReportForm/>
-                          </div>
-                          <div className="modal-footer">
-                              <button data-dismiss="modal">close</button>
-                          </div>
-                      </div>
+              {/* Camera Model  */}
+                <Modal show={showModal} onHide={handleClose}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Modal heading</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                      <video id='cam'></video>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    {/* results */}
+                    <div className="col-12">
+                      <p>scanned details</p>
+                      {readQR && (
+                          showAuthenticityButton && (
+                            <Modal
+                              show={showResultModel}
+                              onHide={handleResultModalCLose}
+                              backdrop="static"
+                              keyboard={false}
+                              className='flex items-center justify-center mt-40'
+                            >
+                              <Modal.Body className='flex items-center justify-center'>
+                                  <button 
+                                    className='btn btn-outline-danger'
+                                    onClick={checkAuthenticity}
+                                  >
+                                    CHECK AUTHENTICITY
+                                </button>
+                              </Modal.Body>
+                            </Modal>
+                          )
+                      )}
                     </div>
-                </div>
-                
+                    {isLoadingDetails ? null : ( 
+                        <div className="col-12">
+                        {noMatchFound && (
+                          <>
+                          <p>No match found in Our block chain</p>
+                          <button data-toggle="modal" data-target="#report">Report</button>
 
-                </>
-              )}
-              {singleProduct && !noMatchFound && (
-                <>
-                  <p><strong>AUTHENTIC</strong></p>
-                  <button data-toggle="modal" data-target="#viewMore">View more</button>
-                  <div className="modal" tabIndex={-1} role="dialog" id='viewMore'>
-                    <div className="modal-dialog" role='documnet'>
-                      <div className="modal-content">
-                        <div className="modal-body">
-                        <>
-                          <p><strong>Product Name: </strong>{singleProduct.productName}</p>
-                          <p><strong>Business Name: </strong>{singleProduct.businessName}</p>
-                          <p><strong>Business Email: </strong>{singleProduct.userEmail}</p>
-                          <p><strong>Product Category: </strong>{singleProduct.productCategory}</p>
-                          <p>Product images</p>
-                          <button data-toggle="modal" data-target="#productImages">See Images</button>
-
-                          {/* image model */}
-                          <div className="modal" tabIndex={-1} role="dialog" id="productImages">
+                          {/* report-modal */}
+                          <div className="modal" tabIndex={-1} role="dialog" id="report">
                             <div className="modal-dialog modal-dialog-centerd modal-lg" role="document">
-                              <div className="modal-content">
-                                <div className="modal-body">
-                                
-                                  <div className="images" style={{display:"flex", padding:"50px"}}>
-                                    <img src={singleProduct.productImage1} className='mx-auto d-block img-fluid' />
-                                    <img src={singleProduct.productImage2} className='mx-auto d-block img-fluid' />
-                                    <img src={singleProduct.productImage3} className='mx-auto d-block img-fluid' />
-                                  </div>
-                                
+                                <div className="modal-content">
+                                    <div className="modal-body">
+                                      {/* Report component */}
+                                      <ReportForm/>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button data-dismiss="modal">close</button>
+                                    </div>
                                 </div>
-                                <div className="modal-footer">
-                                  <button data-dismiss="modal">close</button>
+                              </div>
+                          </div>
+                          </>
+                        )}
+                        {singleProduct && !noMatchFound && (
+                          <>
+                            <p><strong>AUTHENTIC</strong></p>
+                            <button data-toggle="modal" data-target="#viewMore">View more</button>
+                            <div className="modal" tabIndex={-1} role="dialog" id='viewMore'>
+                              <div className="modal-dialog" role='documnet'>
+                                <div className="modal-content">
+                                  <div className="modal-body">
+                                  <>
+                                    <p><strong>Product Name: </strong>{singleProduct.productName}</p>
+                                    <p><strong>Business Name: </strong>{singleProduct.businessName}</p>
+                                    <p><strong>Business Email: </strong>{singleProduct.userEmail}</p>
+                                    <p><strong>Product Category: </strong>{singleProduct.productCategory}</p>
+                                    <p>Product images</p>
+                                    <button data-toggle="modal" data-target="#productImages">See Images</button>
+
+                                    {/* image model */}
+                                    <div className="modal" tabIndex={-1} role="dialog" id="productImages">
+                                      <div className="modal-dialog modal-dialog-centerd modal-lg" role="document">
+                                        <div className="modal-content">
+                                          <div className="modal-body">
+                                          
+                                            <div className="images" style={{display:"flex", padding:"50px"}}>
+                                              <img src={singleProduct.productImage1} className='mx-auto d-block img-fluid' />
+                                              <img src={singleProduct.productImage2} className='mx-auto d-block img-fluid' />
+                                              <img src={singleProduct.productImage3} className='mx-auto d-block img-fluid' />
+                                            </div>
+                                          
+                                          </div>
+                                          <div className="modal-footer">
+                                            <button data-dismiss="modal">close</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </>
+                                  </div>
+                                  <div className="modal-footer">
+                                    <button data-dismiss="modal">close</button>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        </>
-                        </div>
-                        <div className="modal-footer">
-                          <button data-dismiss="modal">close</button>
-                        </div>
+                          </>
+                        )}
                       </div>
-                    </div>
-                  </div>
-                </>
-              )}
+                      )}
+                    <Button variant="btn btn-outline-secondary" onClick={handleClose}>
+                      Close
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
             </div>
-            )}
+
           </div>
         </div>
 
