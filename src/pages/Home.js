@@ -93,18 +93,14 @@ const Home = () => {
   return (
     <div className='home'>
       <div className="row">
-        <div className="col-8">
-          <p>block chain added product</p>
-          {Array.isArray(authenticProducts) && authenticProducts.map((product)=>(
-              <AuthenticProductItem key={product._id} product={product}/>
-          ))}
-        </div>
-        <div className="col-4">
+
+        {/* banner part */}
+        <div className="col-12">
           <div className="row">
             <div className="col-12" style={{display:"flex", flexDirection:"column"}}>
               <p>pop up camera</p>
               <button 
-                className='btn btn-outline-primary'
+                className='btn bg-red-400'
                 onClick={show}
               >
                 OPEN CAMERA
@@ -203,6 +199,15 @@ const Home = () => {
             )}
           </div>
         </div>
+
+        {/* Block chain added products part */}
+        <div className="col-12">
+          <p>block chain added product</p>
+          {Array.isArray(authenticProducts) && authenticProducts.map((product)=>(
+              <AuthenticProductItem key={product._id} product={product}/>
+          ))}
+        </div>
+
       </div>
     </div>
   )
