@@ -23,16 +23,19 @@ contract ProductRegistry {
     
     event ProductRegistered(uint256 productId, bytes32 hashValue);
     
-  
-   function registerProduct(uint256 productId, bytes32 hashValue) external onlyOwner {
+    function registerProduct(uint256 productId, bytes32 hashValue) external onlyOwner {
         require(!productHashes[productId].isRegistered, "Product is already registered");
         productHashes[productId] = Product(hashValue, true);
         productCount++;
         emit ProductRegistered(productId, hashValue);
     }
     
-   function verifyProduct(uint256 productId, bytes32 scannedHashValue) external view returns (bool) {
-        require(productHashes[productId].isRegistered, "Product is not registered");
-        return productHashes[productId].hashValue == scannedHashValue;
+    function verifyProduct(bytes32 scannedHashValue) external view returns (bool) {
+        for (uint256 i = 0; i < productCount; i++) {
+            if (productHashes[i].isRegistered && productHashes[i].hashValue == scannedHashValue) {
+                return true;
+            }
+        }
+        return false;
     }
 }
