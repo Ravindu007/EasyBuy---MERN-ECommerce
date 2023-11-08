@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import ProductRegistry from './ProductRegistry.json';
 import uniqid from 'uniqid';
-import { useQRContext } from './QRContext'; // Import the QR context
+import { useQRContext } from './QRContext'; // Import the QR context (have to change)
 import { useQRcodeGeneration } from '../bloackChain/useQRcodeGeneration';
 import { readContractAddress, deployProductRegistry } from './contractReader';
 
@@ -29,7 +29,6 @@ const ProductRegistryApp = () => {
         await window.ethereum.enable();
         setWeb3(web3Instance);
 
-        // Read the contract address from the JSON file
         const contractAddress = await readContractAddress();
 
         if (contractAddress) {
@@ -37,8 +36,8 @@ const ProductRegistryApp = () => {
           setContract(contractInstance);
         } else {
           console.log('Contract not deployed on the current network. Deploying now...');
-          await deployProductRegistry(); // Deploy the contract
-          const newContractAddress = await readContractAddress(); // Read the new contract address
+          await deployProductRegistry();
+          const newContractAddress = await readContractAddress(); 
 
           if (newContractAddress) {
             const newContractInstance = new web3Instance.eth.Contract(ProductRegistry.abi, newContractAddress);
