@@ -112,10 +112,6 @@ const ProductRegistryApp = () => {
         <input type="number" value={productId} onChange={(e) => setProductId(e.target.value)} />
       </div>
       )}
-      <div>
-        <label>Hash Value:</label>
-        <input type="text" value={hashValue} onChange={(e) => setHashValue(e.target.value)} />
-      </div>
       <button onClick={handleRegisterProduct} disabled={!contract || !web3 || !productId || !hashValue}>Register Product</button>
 
       <hr />
