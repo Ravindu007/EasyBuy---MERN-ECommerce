@@ -14,6 +14,7 @@ const ProductRegistryApp = () => {
   const [hashValue, setHashValue] = useState('');
   const [scannedHashValue, setScannedHashValue] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
+  const [showProductIdInput, setShowProductIdInput] = useState(false);
 
   // Function to generate the blockchain ID
   const generateBlockChainID = (productId, businessId) => {
@@ -70,6 +71,8 @@ const ProductRegistryApp = () => {
       generateQR(generatedHashValue, product, business);
 
       alert('Product registered successfully');
+      
+      setShowProductIdInput(true);
     } catch (error) {
       console.error('Error registering the product:', error);
     }
@@ -103,10 +106,12 @@ const ProductRegistryApp = () => {
   return (
     <div>
       <h1>Product Registry</h1>
+      {showProductIdInput && (
       <div>
         <label>Product ID:</label>
         <input type="number" value={productId} onChange={(e) => setProductId(e.target.value)} />
       </div>
+      )}
       <div>
         <label>Hash Value:</label>
         <input type="text" value={hashValue} onChange={(e) => setHashValue(e.target.value)} />
