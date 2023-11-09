@@ -116,12 +116,9 @@ const ProductRegistryApp = () => {
 
       <hr />
 
-      <div>
-        <label>Scanned Hash Value:</label>
-        <input type="text" value={scannedHashValue} onChange={(e) => setScannedHashValue(e.target.value)} />
-      </div>
-      <button onClick={handleVerifyProduct} disabled={!contract || !web3 || !scannedHashValue}>Compare Hash Value</button>
+      {scannedHashValue && (
       {isRegistered ? <p>The hash values match. Product is registered.</p> : <p>The hash values do not match. Product is not registered.</p>}
+      )}
     </div>
   );
 };
