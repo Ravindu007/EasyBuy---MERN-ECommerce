@@ -16,10 +16,10 @@ export function useQRContext() {
 }
 
 export function QRContextProvider({ children }) {
-  const [scannedQR, setScannedQR] = useState('');
+  const [readQR, setReadQR] = useState('');
 
   return (
-    <QRContext.Provider value={{ scannedQR, setScannedQR }}>
+    <QRContext.Provider value={{ readQR, setReadQR }}>
       {children}
     </QRContext.Provider>
   );
@@ -37,14 +37,14 @@ const Home = () => {
 
 
 
-  const [readQR, setReadQR] = useState("")
+  const [readQR, setReadQR] = useQRContext() // Using the context state
 
   // do not delete this part. this will triger the scan each time new input detected
   useEffect(() => {
     if (readQR && !showAuthenticityButton) {
       alert('Please press the authenticity button');
     }
-  }, []);
+  }, [readQR, showAuthenticityButton]); // Dependencies included
 
   const scanQR = () => {
     const qrScanner = new QrScanner(
