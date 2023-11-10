@@ -2,12 +2,7 @@ import React, { useState } from 'react'
 import { useAuthContext } from '../../../hooks/authHooks/useAuthContext'
 import { useSellerProductContext } from '../../../hooks/useSellerProductContext'
 import { useSellerProfileContext } from '../../../hooks/useSellerProfileContext'
-
-// blockchain 
-import {generateBlockChainID} from "../../../bloackChain/generateBlockchainId"
-import {useQRcodeGeneration} from "../../../bloackChain/useQRcodeGeneration"
-
-
+import { handleRegisterProduct } from '../../../contract/ProductRegistryApp' // imported by Iman
 import "./SellerProductItem.scss"
 
 const SellerProductItem = ({product, business}) => {
@@ -89,10 +84,7 @@ const SellerProductItem = ({product, business}) => {
 
     if(business.productsPublished < business.package){
 
-        // generate unique key (block chain simulation) 
-        const blockChainId = generateBlockChainID(product._id, business._id)
-        // generateQR code
-        await generateQR(blockChainId, product, business);
+        handleRegisterProduct(); // attempt to register the product in blockchain and generate QR (change done by Iman)
 
           
 
