@@ -6,6 +6,24 @@ import { useAuthenticProductContext } from '../hooks/useAuthenticProductContext'
 import ReportForm from '../components/users/consumer/ReportForm';
 import { Modal, Button } from 'react-bootstrap';
 
+// Create a context for the QR code (changes done by Iman)
+import { createContext, useContext, useState } from 'react';
+
+const QRContext = createContext();
+
+export function useQRContext() {
+  return useContext(QRContext);
+}
+
+export function QRContextProvider({ children }) {
+  const [scannedQR, setScannedQR] = useState('');
+
+  return (
+    <QRContext.Provider value={{ scannedQR, setScannedQR }}>
+      {children}
+    </QRContext.Provider>
+  );
+}
 
  
 const Home = () => {
@@ -107,6 +125,7 @@ const Home = () => {
 
 
   return (
+   <QRContextProvider>
     <div className='home'>
       <div className="row">
 
@@ -245,6 +264,7 @@ const Home = () => {
 
       </div>
     </div>
+   </QRContextProvider>
   )
 }
 
