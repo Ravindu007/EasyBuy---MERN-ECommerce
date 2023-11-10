@@ -94,14 +94,14 @@ const ProductRegistryApp = () => {
     }
   };
 
-  const { scannedQR } = useQRContext();
+  const { readQR } = useQRContext();
 
   useEffect(() => {
-    if (scannedQR) {
-      setScannedHashValue(scannedQR);
+    if (readQR) {
+      setScannedHashValue(readQR);
       handleVerifyProduct();
     }
-  }, [scannedQR]);
+  }, [readQR]);
 
   return (
     <div>
