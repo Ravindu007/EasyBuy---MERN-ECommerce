@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import ProductRegistry from './ProductRegistry.json';
 import uniqid from 'uniqid';
-import { useQRContext } from './QRContext'; // Import the QR context (have to change)
+import { useQRContext } from '../pages/Home';
 import { useQRcodeGeneration } from '../bloackChain/useQRcodeGeneration';
 import { readContractAddress, deployProductRegistry } from './contractReader';
 
