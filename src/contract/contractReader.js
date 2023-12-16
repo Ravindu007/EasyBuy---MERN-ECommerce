@@ -1,7 +1,8 @@
-const ProductRegistry = artifacts.require("ProductRegistry");
-const fs = require('fs');
+// contractReader.js
 
-async function deployProductRegistry() {
+import ProductRegistry from './ProductRegistry'; // Assuming you have this import
+
+export const deployProductRegistry = async () => {
   try {
     const instance = await ProductRegistry.deployed();
     const contractAddress = instance.address;
@@ -11,36 +12,29 @@ async function deployProductRegistry() {
       address: contractAddress,
     };
 
-    const jsonData = JSON.stringify(contractData, null, 2);
+    // Save the contract address in localStorage or any other client-side storage solution
+    localStorage.setItem('ProductRegistryAddress', JSON.stringify(contractData));
 
-    fs.writeFileSync('ProductRegistry.json', jsonData);
-
-    console.log("Contract address saved in 'ProductRegistry.json'");
+    console.log("Contract address saved in client-side storage");
   } catch (error) {
     console.error('Error deploying contract and saving address:', error);
   }
-}
+};
 
-
-async function readContractAddress() {
+export const readContractAddress = () => {
   try {
-    // Read the 'ProductRegistry.json' file and parse its content
-    const jsonData = fs.readFileSync('ProductRegistry.json', 'utf8');
-    const contractData = JSON.parse(jsonData);
+    // Read the contract address from client-side storage
+    const storedContractData = localStorage.getItem('ProductRegistryAddress');
 
-    if (contractData && contractData.address) {
+    if (storedContractData) {
+      const contractData = JSON.parse(storedContractData);
       return contractData.address;
     } else {
-      console.error('Contract address not found in JSON file');
+      console.error('Contract address not found in client-side storage');
       return null;
     }
   } catch (error) {
-    console.error('Error reading contract address from JSON file:', error);
+    console.error('Error reading contract address from client-side storage:', error);
     return null;
   }
-}
-
-module.exports = {
-  deployProductRegistry,
-  readContractAddress,
 };

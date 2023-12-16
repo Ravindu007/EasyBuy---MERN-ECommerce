@@ -1,11 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { useAuthContext } from '../../../hooks/authHooks/useAuthContext'
 import { useSellerProductContext } from '../../../hooks/useSellerProductContext'
 import { useSellerProfileContext } from '../../../hooks/useSellerProfileContext'
-import { handleRegisterProduct } from '../../../contract/ProductRegistryApp' // imported by Iman
+import { ProductRegistryApp, handleRegisterProduct } from '../../../contract/ProductRegistryApp' // imported by Iman
 import "./SellerProductItem.scss"
+import {useQRcodeGeneration} from "../../../bloackChain/useQRcodeGeneration"
 
 const SellerProductItem = ({product, business}) => {
+
+
+  const componentOneRef = useRef(null);
+  const componentOne = <ProductRegistryApp ref={componentOneRef} />;
+
   const {user} = useAuthContext()
   const {dispatch} = useSellerProductContext()
   const {dispatch:dispatchSellerProfile} = useSellerProfileContext()
@@ -84,7 +90,7 @@ const SellerProductItem = ({product, business}) => {
 
     if(business.productsPublished < business.package){
 
-        handleRegisterProduct(); // attempt to register the product in blockchain and generate QR (change done by Iman)
+        componentOneRef.current.handleRegisterProduct(); // attempt to register the product in blockchain and generate QR (change done by Iman)
 
           
 
@@ -109,7 +115,7 @@ const SellerProductItem = ({product, business}) => {
         // patch request to product details
         const formData2 = new FormData()
         formData2.append('requestedToAddToBlockChain', true)
-        formData2.append('blockChainId', blockChainId)
+        formData2.append('blockChainId', '123456') //have to change this ti valid blockchain id
         
 
         const response2 = await fetch("/api/users/seller/updateProduct/" + product._id,{

@@ -7,7 +7,7 @@ import ReportForm from '../components/users/consumer/ReportForm';
 import { Modal, Button } from 'react-bootstrap';
 
 // Create a context for the QR code (changes done by Iman)
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext } from 'react';
 
 const QRContext = createContext();
 
