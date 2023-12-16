@@ -119,7 +119,7 @@ const ProductRegistryApp = forwardRef((props, ref) => {
       <hr />
 
       {scannedHashValue && (
-        isRegistered ? <p>The hash values match. Product is registered.</p> : <p>The hash values do not match. Product is not registered.</p>
+      {isRegistered ? <p>The hash values match. Product is registered.</p> : <p>The hash values do not match. Product is not registered.</p>}
       )}
     </div>
   );
