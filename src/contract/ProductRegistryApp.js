@@ -96,7 +96,7 @@ const ProductRegistryApp = forwardRef((props, ref) => {
     }
   };
 
-  const { readQR } = useQRContext();
+  const {readQR}  = useQRContext();
 
   useEffect(() => {
     if (readQR) {

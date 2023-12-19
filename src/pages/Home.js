@@ -37,7 +37,7 @@ const Home = () => {
 
 
 
-  const [readQR, setReadQR] = useQRContext() // Using the context state
+  const {readQR, setReadQR}= useQRContext() // Using the context state
 
   // do not delete this part. this will triger the scan each time new input detected
   useEffect(() => {
